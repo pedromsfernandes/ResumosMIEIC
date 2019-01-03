@@ -37,3 +37,15 @@ adotamos o LaTeX.
 #### Tutorial
 
 [Overleaf](https://pt.overleaf.com/learn/latex/Tutorials)
+
+## Colaboradores
+
+- [André Esteves](https://github.com/EstevesAndre)
+- [Antero Santos](https://github.com/SantosAntero)
+- [Bruno Sousa](https://github.com/Rekicho)
+- [Francisco Filipe](https://github.com/CiscoFrisco)
+- [João Gonçalves](https://github.com/JoaoGoncalves98)
+- [Luís Sousa](https://github.com/luisdiogo98)
+- [Pedro Silva](https://github.com/PedroMiguelSilva)
+
+

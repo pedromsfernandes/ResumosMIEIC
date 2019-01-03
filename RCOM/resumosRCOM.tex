@@ -1,0 +1,55 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{subfiles}
+\usepackage{blindtext}
+\usepackage[T1]{fontenc}
+
+\graphicspath{{images/}{../images/}}
+ 
+\title{Resumos RCOM}
+\author{MIEIC}
+\date{Janeiro 2019}
+ 
+\begin{document}
+ 
+\maketitle
+
+\tableofcontents
+ 
+\section{Physical Layer}
+
+\subfile{sections/physical}
+ 
+\section{Data Link Layer}
+ 
+\subfile{sections/data-link}
+
+\section{Delay Models}
+ 
+\subfile{sections/delay}
+
+\section{MAC Sublayer}
+ 
+\subfile{sections/mac}
+
+\section{Network Layer}
+ 
+\subfile{sections/network}
+
+\section{Transport Layer}
+ 
+\subfile{sections/transport}
+
+\section{Routing}
+ 
+\subfile{sections/routing}
+
+\section{Application Layer}
+ 
+\subfile{sections/application}
+
+\end{document}

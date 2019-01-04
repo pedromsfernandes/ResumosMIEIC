@@ -7,6 +7,14 @@
 \usepackage{subfiles}
 \usepackage{blindtext}
 \usepackage[T1]{fontenc}
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \graphicspath{{images/}{../images/}}
  
@@ -15,45 +23,45 @@
 \date{January 2019}
  
 \begin{document}
- 
+
 \maketitle
 
 \tableofcontents
- 
+
 \section{Software processes}
 
 \subfile{sections/processes}
- 
+
 \section{Agile Methods}
- 
+
 \subfile{sections/agile}
 
 \section{Requirements Engineering}
- 
+
 \subfile{sections/requirements}
 
 \section{Arquitectural Design}
- 
+
 \subfile{sections/architecture}
 
 \section{Design and Implementation}
- 
+
 \subfile{sections/design}
 
 \section{Software Testing, Verification and Validation}
- 
+
 \subfile{sections/vv}
 
 \section{Security in Software Development}
- 
+
 \subfile{sections/security}
 
 \section{Software Evolution}
- 
+
 \subfile{sections/evolution}
 
 \section{GitHub}
- 
+
 \subfile{sections/github}
- 
+
 \end{document}

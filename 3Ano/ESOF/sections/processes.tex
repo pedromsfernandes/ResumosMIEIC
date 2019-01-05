@@ -1,5 +1,145 @@
 \documentclass[../ESOF_notes.tex]{subfiles}
  
-\begin{document} 
-Hello, here is some text without a meaning.  This... 
+\begin{document}
+
+Software engineering - systematic, disciplined, quantifiable approach to the development, operation, and maintenance of software – cost-effective, timely, predictable, high-quality
+
+Software process - structured set of activities required to develop a software system.
+
+\paragraph{Following process activities}
+\begin{itemize}
+    \item Specification – defining what the system should do;
+    \item Design and implementation – defining the organization of the system and implementing the system;
+    \item Validation – checking that it does what the customer wants;
+    \item Evolution – changing the system in response to changing customer needs.
+\end{itemize}
+
+\paragraph{Types of processes}
+\begin{itemize}
+    \item Plan-driven: planned in advance and progress is measured against this plan
+    \item Agile: planning is incremental
+    \item Most approaches nowadays combine both methods
+\end{itemize}
+
+\paragraph{Why define processes?}
+\begin{itemize}
+    \item Efficiency – helps to keep focus and structure
+    \item Consistency - results likely to be similar
+    \item Basis for Improvement - gathering data on your work -> room for improvement
+\end{itemize}
+
+\subsection{Process Activities}
+\paragraph{Software specification (or requirements engineering)}
+\begin{itemize}
+    \item Requirements elicitation and analysis - What do the system stakeholders require or expect from the system?
+    \item Requirements specification - Defining the requirements in detail
+    \item Requirements validation - Checking the validity of the requirements
+\end{itemize}
+
+\paragraph{Software design and implementation}
+
+Design - design a software structure that realises the specification
+
+\begin{itemize}
+    \item Architectural design – overall structure
+    \item Database design – system data structure
+    \item Interface design – between system components
+    \item Component (or detailed) design – design of each component individually
+\end{itemize}
+
+Implementation - translate the design into an exec. prog.
+
+\paragraph{Software verification and validation (testing)}
+the system conforms to its specification (verification)
+meets the requirements and customer needs (validation).
+
+Testing
+
+\begin{itemize}
+    \item Unit (or component) testing – individual component testing
+    \item Integration testing – testing of interaction between components
+    \item System testing – general testing (performance, usability, etc…)
+    \item Acceptance testing – live testing with data
+\end{itemize}
+
+\paragraph{Software evolution (or maintenance) – after development}
+\begin{itemize}
+    \item Corrective – bug fixing
+    \item Adaptive – adapt to new platforms, technologies
+    \item Perfective – new functionalities
+\end{itemize}
+
+\subsection{Software process models}
+Waterfall model (plan-driven) – Separate specification and development
+
+\begin{itemize}
+    \item Inflexible partitioning of the project – hard to respond to changing requirements
+    \item Used for large systems engineering projects where a system is developed at several sites – plan-driven aspect helps with coordination
+\end{itemize}
+
+Incremental development (\& delivery) (aglie or plan-driven) - Specification, development and validation are interleaved.
+
+\begin{itemize}
+    \item Easier to adapt to changing requirements
+    \item More feedback – reduced risk of failure
+    \item Can be delivered staggered
+    \item Needs constant refactoring (due to the multiple increments)
+    \item Suboptimal reusability
+\end{itemize}
+Integration and configuration (agile or plan-driven) - The system is assembled from existing configurable components.
+
+\begin{itemize}
+    \item Reduced costs and risks – less software developed from scratch
+    \item Faster system delivery
+    \item Needs requirement compromises to fit existing components
+    \item Loss of control over the evolution of the used components
+\end{itemize}
+
+Software prototyping - Not actually a model but an approach to cope with uncertainty
+\begin{itemize}
+    \item A prototype is an initial version of a system used to demonstrate concepts and try out design options – reduced uncertainty
+\end{itemize}
+
+\subsection{RUP - Rational Unified Process}
+
+\subsubsection{Best Practices}
+\begin{itemize}
+    \item Develop iteratevely
+    \item Manage requirements
+    \item Use component architectures
+    \item Model visually (UML)
+    \item Continuously verify quality
+    \item Manage change
+\end{itemize}
+
+\subsubsection{Phases}
+\begin{itemize}
+    \item Inception
+    \item Elaboration
+    \item Construction
+    \item Transition
+\end{itemize}
+
+\subsubsection{Disciplines}
+
+\begin{itemize}
+    \item Business modeling
+    \item Requirements
+    \item Analysis \& design
+    \item Implementation
+    \item Test
+    \item Deployment
+    \item Configuration \& change management
+    \item Project management
+    \item Environment
+\end{itemize}
+
+\subsubsection{Basic elements}
+\begin{itemize}
+    \item Role
+    \item Activity
+    \item Artifact
+    \item Workflow \& Workflow Detail
+\end{itemize}
+
 \end{document}

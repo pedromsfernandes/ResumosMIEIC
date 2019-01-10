@@ -132,7 +132,7 @@ Separates presentation \textbf{(V)} and interaction \textbf{(C)} from the applic
     \item Supports presentation of the same data in different ways.
     \item Changes made in one data representation are shown in all of them.
 \end{itemize}
-\textbf{Disavantages:}
+\textbf{Disadvantages:}
 \begin{itemize}
     \item Code overhead for simple data model and interactions.
 \end{itemize}
@@ -150,7 +150,7 @@ Organizes the system as a set of data processing components (filters), connected
     \item Evolution by adding transformations is straightforward.
     \item Can be implemented as either a sequential or concurrent system.
 \end{itemize}
-\textbf{Disavantages:}
+\textbf{Disadvantages:}
 \begin{itemize}
     \item Format for data transfer has to be agreed upon.
     \item Possible overhead in parsing/unparsing input/output data.
@@ -168,7 +168,7 @@ Organizes the system into a set of layers, each of which groups related function
     \item Supports the incremental development layer by layer.
     \item Lower layers provide isolation from system/platform specificities.
 \end{itemize}
-\textbf{Disavantages (strict layering):}
+\textbf{Disadvantages (strict layering):}
 \begin{itemize}
     \item Providing a clean separation between layers is often difficult and a high-level layer may have to interact directly with lower-level layers.
     \item Performance can be a problem because of multiple levels of interpretation of a service request as it is processed at each layer.
@@ -189,7 +189,7 @@ All data in a system is managed in a central repository that is accessible to al
     \item Components can be independent (don’t need to know each other).
     \item Changes made by one component can be propagated to all others.
 \end{itemize}
-\textbf{Disavantages:}
+\textbf{Disadvantages:}
 \begin{itemize}
     \item The repository is a single point of failure for the whole system.
     \item Possible inefficiency in having all communication through the repos.
@@ -209,7 +209,7 @@ Asymmetrical distributed system in which clients request services from servers t
     \item Servers can be distributed and replicated across a network.
     \item General functionality (e.g., printing) can be available to all clients.
 \end{itemize}
-\textbf{Disavantages:}
+\textbf{Disadvantages:}
 \begin{itemize}
     \item Each service is a single point of failure so susceptible to denial of service attacks or server failure.
     \item Performance may be unpredictable because it depends on the network as well as the system.

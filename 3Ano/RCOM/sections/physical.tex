@@ -95,10 +95,15 @@ The maximum theoretical capacity of a channel (bit/s) is given by the following 
 \[M = 2^3 = 8\]
 
 \paragraph{2017N - 3}
-\[SNR = \frac{P_r}{N_0B}\]
 \[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
+\[{P_r}=\frac{P_t}{\frac{(4\lambda fd)^2}{c^2}}\]
+\[{P_r}=\frac{P_tc^2}{(4\lambda fd)^2}\]
 
-Quanto maior B, menor SNR. Quanto maior d, maior \textit{free space loss}, logo menor a eficiência.
+\[SNR = \frac{P_r}{N_0B}\]
+
+
+Quanto maior d, menor \(P_r\), e quanto menor \(P_r\), menor SNR.
+Quanto maior B, menor SNR, logo menor a eficiência.
 
 \paragraph{2016R - 1}
 \begin{itemize}
@@ -129,8 +134,14 @@ Quanto maior B, menor SNR. Quanto maior d, maior \textit{free space loss}, logo 
 Canal rádio com propagação em espaço livre.
 
 \[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
+\[{P_r}=\frac{P_t}{\frac{(4\lambda fd)^2}{c^2}}\]
+\[{P_r}=\frac{P_tc^2}{(4\lambda fd)^2}\]
 
-Capacidade aumenta com diminuição da distância (d) e frequência (f), porque diminui free space loss.
+\[SNR = \frac{P_r}{N_0B}\]
+\[C = B_c\log_2 (1 + SNR)\]
+
+Quanto menor a distância e frequência, maior \(P_r\).
+Quanto maior \(P_r\), maior SNR, logo maior a capacidade.
 
 \paragraph{2015 - 2}
 \begin{itemize}
@@ -138,16 +149,17 @@ Capacidade aumenta com diminuição da distância (d) e frequência (f), porque 
     \item Pt1 = Pt2 (potência transmitida pelo emissor)
     \item B1 = B2 (largura de banda do canal)
     \item d1 < d2 (distância entre o emissor e o recetor)
-    \item relation between the connections B P and C ?
+    \item relação entre P e C das ligações?
 \end{itemize}
 
 \[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
 \[P_t=P_r\frac{(4\lambda fd)^2}{c^2}\]
-From Pt1 = Pt2,
+De Pt1 = Pt2,
 \[P_r1*(4\lambda fd_1)^2 = P_r2*(4\lambda fd_2)^2\]
-Since d1 < d2, P\_r1 > P\_r2, then C1 > C2
+Como d1 < d2, P\_r1 > P\_r2, então C1 > C2
 \[C_1 = B_1\log_2 (1 + \frac{P_r1}{N_0B_1})\]
 \[C_2 = B_1\log_2 (1 + \frac{P_r2}{N_0B_1})\]
+
 \paragraph{2014N - 1}
 \begin{itemize}
     \item baudrate (2B) = 8 kbaud

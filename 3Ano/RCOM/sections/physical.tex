@@ -1,5 +1,196 @@
 \documentclass[../resumosRCOM.tex]{subfiles}
  
 \begin{document} 
-Hello, here is some text without a meaning.  This... 
+\subsection{Transmitting information}
+
+\begin{equation}
+    C = 2B\log_2 M
+\end{equation}
+
+\begin{description}
+    \item[C] \hfill \\ channel capacity
+    \item[B] \hfill \\ bandwith
+    \item[2B] \hfill \\ baudrate in symbol/s or baud
+    \item[M] \hfill \\ levels used to encode information  
+\end{description}
+
+\subsection{Types of modulations}
+
+\begin{itemize}
+    \item Binary signal
+    \item Amplitude modulation
+    \item Frequency modulation
+    \item Phase modulation
+    \item Quadrature Amplitude Modulation (M - QAM)
+\end{itemize}
+
+\subsection{Shannon's Law}
+
+The maximum theoretical capacity of a channel (bit/s) is given by the following expressions:
+\begin{equation}
+    SNR = \frac{P_r}{N_0B_c}
+\end{equation}
+
+\begin{equation}
+    C = B_c\log_2 (1 + SNR)
+\end{equation}
+
+\begin{description}
+    \item[SNR] \hfill \\ signal to noise ratio
+    \item[\(B_c\)] \hfill \\ bandwidth of the channel (Hz)
+    \item[\(P_r\)] \hfill \\  signal power as seen by receiver (W) 
+    \item[\(N_0\)] \hfill \\  White noise; noise power per unit bandwidth (W/Hz)
+\end{description}
+
+\subsection{Free space loss}
+
+\begin{equation}
+    \frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}
+\end{equation}
+
+\begin{description}
+    \item[\(P_t\)] \hfill \\ signal power at transmitting antenna
+    \item[\(P_r\)] \hfill \\ signal power at receiving antenna
+    \item[\(\lambda\)] \hfill \\ carrier wavelength
+    \item[d] \hfill \\ propagation distance between antennas
+    \item[c] \hfill \\ speed of light \(3 * 10^8 \) m/s 
+\end{description}
+
+\subsection{Solved Exam Problems}
+\paragraph{2018R - 1}
+\begin{itemize}
+    \item 16 QAM
+    \item bitrate (C) = 8kbit/s
+    \item baudrate (2B) = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[8 = 2B\log_2 16\]
+\[8 = 2B*4\]
+\[2B = 2\]
+
+\paragraph{2018N - 1}
+\begin{itemize}
+    \item 8PSK
+    \item baudrate (2B) = 250 kbaud
+    \item bitrate (C) = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[C = 250\log_2 8\]
+\[C = 250*3\]
+\[C = 750\]
+
+\paragraph{2017N - 2}
+\begin{itemize}
+    \item baudrate (2B) = 100 kbaud
+    \item bitrate (C) = 300 kbit/s
+    \item phase modulation
+    \item nº of phases = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[300 = 100\log_2 M\]
+\[3 = log_2 M\]
+\[M = 2^3 = 8\]
+
+\paragraph{2017N - 3}
+\[SNR = \frac{P_r}{N_0B}\]
+\[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
+
+Quanto maior B, menor SNR. Quanto maior d, maior \textit{free space loss}, logo menor a eficiência.
+
+\paragraph{2016R - 1}
+\begin{itemize}
+    \item baudrate (2B) = 80 kbaud
+    \item bitrate (C) = 320 kbit/s
+    \item phase modulation
+    \item nº of phases = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[320 = 80\log_2 M\]
+\[4 = log_2 M\]
+\[M = 2^4 = 16\]
+
+\paragraph{2016N - 2}
+\begin{itemize}
+    \item 16 QAM
+    \item bitrate (C) = 100kbit/s
+    \item baudrate (2B) = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[100 = 2B\log_2 16\]
+\[100 = 2B*4\]
+\[2B = 25\]
+
+\paragraph{2016N - 3}
+Canal rádio com propagação em espaço livre.
+
+\[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
+
+Capacidade aumenta com diminuição da distância (d) e frequência (f), porque diminui free space loss.
+
+\paragraph{2015 - 2}
+\begin{itemize}
+    \item 2 ligações sem fios
+    \item Pt1 = Pt2 (potência transmitida pelo emissor)
+    \item B1 = B2 (largura de banda do canal)
+    \item d1 < d2 (distância entre o emissor e o recetor)
+    \item relation between the connections B P and C ?
+\end{itemize}
+
+\[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
+\[P_t=P_r\frac{(4\lambda fd)^2}{c^2}\]
+From Pt1 = Pt2,
+\[P_r1*(4\lambda fd_1)^2 = P_r2*(4\lambda fd_2)^2\]
+Since d1 < d2, P\_r1 > P\_r2, then C1 > C2
+\[C_1 = B_1\log_2 (1 + \frac{P_r1}{N_0B_1})\]
+\[C_2 = B_1\log_2 (1 + \frac{P_r2}{N_0B_1})\]
+\paragraph{2014N - 1}
+\begin{itemize}
+    \item baudrate (2B) = 8 kbaud
+    \item bitrate (C) = 32 kbit/s
+    \item bandwith (B) = 4 kHz
+    \item M = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[32 = 8\log_2 M\]
+\[4 = \log_2 M\]
+\[M = 16\]
+
+\paragraph{2013N - 1}
+\begin{itemize}
+    \item bandwith (B) = 1 MHz
+    \item baudrate (2B) = 2 MHz
+    \item SNR = 40 dB
+    \item 8 level impulses => M = 8
+    \item bitrate (C) = ?
+\end{itemize}
+
+\[C = 2B\log_2 M\]
+\[C = 2\log_2 8\]
+\[C = 2*3 = 6\]
+
+\paragraph{2012N - 1}
+\begin{itemize}
+    \item 4 QAM
+    \item baudrate (2B) = 100 kbaud
+    \item bitrate (C) = ?
+\end{itemize}
+
+\[C = 100\log_2 4\]
+\[C = 100*2\]
+\[C = 200\]
+
+\paragraph{2011N - 2}
+Num canal sem fios, potência recebida é tanto maior quanto menor for a distância emissor-recetor e o comprimento de onda
+da portadora.
+
+\[\frac{P_t}{P_r}=\frac{(4\lambda fd)^2}{c^2}\]
+\[P_r=\frac{P_t}{\frac{(4\lambda fd)^2}{c^2}}\]
+\[P_r=\frac{P_tc^2}{(4\lambda fd)^2}\]
+
 \end{document}

@@ -19,17 +19,16 @@
 \textbf{Principal service: }Transfer data from the network layer on the 
 source machine to the network layer on the destination machine.
 \paragraph{}
-The actual services that are offered vary from protocol to protocol. 
-Three reasonable possibilities that we will consider in turn are:
+There are three reasonable possibilities that we will consider:
 \begin{itemize}
     \item \textbf{Unacknowledged connectionless service: }
     \begin{itemize}
-        \item No logical connection is established beforehand or released
-        \item Source machine sends independent frames without having 
-        the destination machine acknowledge them. 
+        \item No logical connection is established beforehand or released 
         afterwards.
+        \item Transmitter sends independent frames without having 
+        the destination machine acknowledge them. 
         \item If a frame is lost due to noise on the line, no attempt 
-        is made to detector recover from that loss.
+        is made to detect or recover from that loss.
         \item Appropriate when the error rate is very low and for 
         real-time traffic.
     \end{itemize}
@@ -37,8 +36,8 @@ Three reasonable possibilities that we will consider in turn are:
     \item \textbf{Acknowledged connectionless service: }
     \begin{itemize}
         \item No logical connections used.
-        \item Each frame sent is individually acknowledged so that the 
-        sender knows whether a frame has arrived correctly or been lost.
+        \item Each frame sent is individually acknowledged so the 
+        sender knows if a frame arrived correctly or has been lost.
         \item If it has not arrived within a specified time interval, 
         it can be sent again.
         \item This service is useful over unreliable channels, 
@@ -51,53 +50,32 @@ Three reasonable possibilities that we will consider in turn are:
         before any data are transferred.
         \item Each frame is numbered, and the data link layer guarantees 
         that each frame sent is indeed received.
-        \item it guarantees that each frame is received exactly once and 
+        \item Guarantees that each frame is received exactly once and 
         that all frames are received in the right order.
-        \item Appropriate over long, unreliable links (i.e. satellite channel,
-         long-distance telephone circuit). If acknowledged connectionless 
-         service were used, lost acknowledgements could cause a frame to be 
-         sent and received several times.
+        \item Appropriate over long, unreliable links (satellite channel,
+         long-distance telephone circuit).
         \item Divided in 3 phases:
         \begin{itemize}
-            \item \textbf{First phase: }The connection is established by having
-             both sides initialize variables and counters needed to keep track of
-             which frames have been received and which ones have not.
-             \item \textbf{Second phase: } One or more frames are actually transmitted.
-             \item \textbf{Third phase: } The connection is released, freeing
-            up the variables, buffers, and other resources used to maintain 
-            the connection.
+            \item \textbf{First phase: }The connection is established 
+            (initialize variables and counters needed to keep track of
+            which frames have been received and which ones have not).
+            \item \textbf{Second phase: } One or more frames are actually 
+            transmitted.
+            \item \textbf{Third phase: } The connection is released (free
+            the variables, buffers, and other resources used to maintain 
+            the connection).
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
-\paragraph{}
-Providing acknowledgements in the data link layer is just an optimization, 
-never a requirement. The network layer can always send a packet and wait 
-for it to be acknowledged by its peer on the remote machine. 
-This strategy,however, can be inefficient. Links usually have a strict maximum
-frame length imposed by the hardware, and known propagation delays. 
-The network layer does not know these parameters. 
-It might send a large packet that is broken up into 10 frames, of which 
-2 are lost on average. If individual frames are acknowledged and
-retransmitted, then errors can be corrected more directly and more quickly.
-On reliable channels, such as fiber, the overhead of a heavyweight data link 
-protocol may be unnecessary, but on (inherently unreliable) wireless channels 
-it is well worth the cost.
-
 \subsection{Framing}
 \paragraph{}
-The physical layer accepts and sends a raw bit stream. 
-If the channel is noisy the physical layer will add some 
-redundancy to its signals to reduce the bit error rate to a tolerable level. 
-However, the bit stream received by the data link layer is not guaranteed to 
-be error free. It is up to the data link layer to detect and correct errors.
-\paragraph{}
-The approach is for the data link layer to break up the bit stream into
-discrete frames, compute a short token called a checksum for each frame, 
-and include the checksum in the frame when it is transmitted.
+Breaking up the bit stream into discrete frames, computing a short token called a
+checksum for each frame, and including the checksum in the frame when it is 
+transmitted.
 When a frame arrives at the destination,the checksum is recomputed. 
 If it is different from the one contained in the frame, the data link layer
-knows that an error has occurred and takes steps to deal with it.
+knows that an error occurred.
 \paragraph{}
 A good design must make it easy for a receiver to find the start of new frames
 while using little of the channel bandwidth. We will look at three methods:
@@ -123,17 +101,10 @@ Issues
     \includegraphics[width=10cm]{byte-count.png}
 \end{figure}
 
-This method is rarely used.
-
 \subsubsection{Flag bytes with byte stuffing}
 \paragraph{}
 This method gets around the problem of resynchronization by having each frame
 start and end with special bytes (flag bytes).
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=10cm]{byte-stuffing-frame.png}
-\end{figure}
 
 \paragraph{}
 However, this flag may occur in the middle of the data and induce the receiver
@@ -151,7 +122,7 @@ using \textbf{byte stuffing}.
  
 \begin{figure}[h]
     \centering
-    \includegraphics[width=10cm]{byte-stuffing-mechanism.png}
+    \includegraphics[width=8cm]{byte-stuffing-mechanism.png}
 \end{figure}
 
 \subsubsection{Flag bits with bit stuffing}
@@ -175,6 +146,11 @@ using \textbf{byte stuffing}.
     maintain synchronization. 
 \end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{bit-stuffing-mechanism.png}
+\end{figure}
+
 \paragraph{}
 \textbf{Both byte and bit stuffing:}
 \begin{itemize}
@@ -182,15 +158,84 @@ using \textbf{byte stuffing}.
     \item Have a frame length that depends on the contents of the data.
 \end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=10cm]{bit-stuffing-mechanism.png}
-\end{figure}
-
 \paragraph{}
-Many data link protocols use a combination of these methods for safety.
+Many data link protocols use a combination of these three methods for safety.
 
 \subsection{Error detection}
+
+\subsubsection{Types of Errors}
+    \begin{itemize}
+        \item \textbf{Simple Error: }Random and independent from previous error.
+        \item \textbf{Errors in burst: } 
+        \begin{itemize}
+            \item Not independent.
+            \item Affect neighbour bits.
+            \item Burst lenght defined by the first and last bits in error.
+        \end{itemize}
+    \end{itemize}
+
+\subsubsection{Counting Errors}
+
+\textbf{Frame Error Probability(FER):} 
+\begin{equation}
+    {FER}= {1-(1- BER)^{n}} 
+\end{equation}
+\begin{conditions}
+    BER & Bit Error Ratio \\
+    n & frame length
+\end{conditions}
+ 
+\noindent
+\newline
+\textbf{No Error Probability: } ${P}= (1- p)^{n}$
+\newline
+\textbf{Error Probability: } ${P}= 1-(1- p)^{n}$ 
+\newline
+\textbf{i Error Probability: } ${P}= {{n}\choose{i}} p^{i}(1- p)^{n-i}$ 
+
+\begin{conditions}
+    p & bit error probability \\ 
+    n & frame length \\
+\end{conditions}
+
+
+\subsubsection{Error Detection Techniques}
+\paragraph{}
+Used by the receiver to determine if a packet contains errors. If a packet is 
+found to contain errors, the receiver may request the transmitter to re-send 
+the packet.
+
+\subsubsection{Parity Check}
+
+\paragraph{}
+\textbf{Simple Parity Check}
+One parity bit added to every k information bits so that:
+\begin{itemize}
+    \item The total number of bits 1 even (even parity).
+    \item The total number of bits 1 odd (odd parity).
+\end{itemize}
+\paragraph{}
+Allows the detection of simple errors and any number of odd errors in a block of 
+k + 1 bits. However, does not detect even number of errors in a block of k + 1 bits.
+
+\paragraph{}
+\textbf{Bi-dimensional Parity}
+\begin{itemize}
+    \item Parity per row.
+    \item Parity per column.
+    \item Minimum code distance = 4.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{bi-dim-parity.png}
+\end{figure}
+
+
+\subsubsection{Cyclic Redundancy Check (CRC)}
+NOT DONE YET!!!
+
+
 \subsection{Automatic Repeat reQuest (ARQ)}
 \paragraph{}
 An error-control method for data transmission that uses acknowledgements
@@ -223,8 +268,8 @@ There are three common ARQ schemes:
 \end{itemize}
 
 \textbf{Issue:}
-If the transmitter times-out and sends a packet twice, the receiver cannot tell whether
-the second frame is a retransmission or a new frame transmission.
+If the transmitter times-out and sends a packet twice, the receiver cannot tell 
+whether the second frame is a retransmission or a new frame transmission.
 
 \textbf{Solution:}
 Define a 1 bit sequence number in the header of the frame.
@@ -236,89 +281,15 @@ expected.  When the receiver sends an ACK, it includes the sequence number of th
 packet it expects.  This way, the receiver can detect duplicated frames by checking if the
 frame sequence numbers alternate.
 
-
 \paragraph{}
-\textbf{Data transmission time:}
-\begin{equation}
-    {T_f}=\frac{L}{R}
-\end{equation}
-where:
-\begin{conditions}
-    T_f    &  Data transmission time \\
-   L     &   Frame Size\\
-   R &  Data Rate 
-\end{conditions}
-
-
-\paragraph{}
-\textbf{Propagation Delay:}
-\begin{equation}
-    {T_{prop}}=\frac{d}{V}
-\end{equation}
-where:
-\begin{conditions}
-    T_{prop}    &  Propagation Delay \\
-   d     &   Distance between sender and receiver \\
-   V &  Propagation Velocity
-\end{conditions}
-
-\paragraph{}
-\textbf{SUMETHIN}
-\begin{equation}
-    {a}=\frac{T_{prop}}{T_f}
-\end{equation}
-where:
-\begin{conditions}
-    a &  SUMETHIN\\
-    T_{prop}    &  Propagation Delay \\
-   T_f     &  Data transmission time 
-  
-\end{conditions}
-
-\paragraph{}
-\textbf{Efficiency:}
+\textbf{Efficiency(S):}
 \begin{equation}
     {S}=\frac{T_f}{T_f + 2 \times T_{prop}} = \frac{1}{1+2a}
 \end{equation}
 where:
 \begin{conditions}
-    S    &  Maximum Efficiency \\
    T_f     &   Data transmission time\\
    T_{prop} &  Propagation Delay 
-\end{conditions}
-
-\textbf{Maximum Rate:}
-\begin{equation}
-    {R_{max}}={S}\times{R}
-\end{equation}
-where:
-\begin{conditions}
-    R_{max}   &  Maximum Rate: \\
-   S     &  Efficiency\\
-   R &  Data rate
-\end{conditions}
-
-\textbf{Round Trip Time: (Time of transmission and acknowledgement of a frame)} 
-\begin{equation}
-    {RTT}= 2 \times {T_{prop}} + {T_f}
-\end{equation}
-where:
-\begin{conditions}
-    RTT   &  Round Trip Time \\
-   T_{prop}     &  Propagation Delay\\
-   T_f &   Data transmission time
-\end{conditions}
-
-\textbf{Frame Error Probability} 
-\begin{equation}
-    {p_e/FER}= {1-(1- BER)^{n}} 
-\end{equation}
-where:
-\begin{conditions}
-    p_e/FER & frame error probability \\
-    BER & Bit Error Ratio \\
-    n & frame length
-
 \end{conditions}
 
 \textbf{Probability of k Attempts required to transmit a frame with success} 
@@ -327,7 +298,7 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-    p_e & frame error probability
+    p_e & frame error probability(FER)
 \end{conditions}
 
 \textbf{Expected number of Attempts to transmit a frame with success} 
@@ -336,7 +307,7 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-    p_e & frame error probability
+    p_e & frame error probability(FER)
 \end{conditions}
 
 \textbf{Efficiency with Errors} 
@@ -345,7 +316,7 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-    p_e & frame error probability
+    p_e & frame error probability(FER)
 \end{conditions}
 
 
@@ -376,7 +347,7 @@ Allows the transmission of new packets before earlier ones are acknowledged.
 \paragraph{}
 \textbf{Behaviour under Errors}
 \begin{itemize}
-    \item Frame with errors is silently discarded by the Receiver.
+    \item Frames with errors are silently discarded by the Receiver.
     \item If Receiver receives Data frame out of sequence:
     \begin{itemize}
         \item First out-of-sequence-frame: Receiver sends REJ(NR) where NR =
@@ -396,13 +367,27 @@ Allows the transmission of new packets before earlier ones are acknowledged.
     \end{itemize}
 \end{itemize}
 
+
+\paragraph{}
+\textbf{Maximum Window Size(W):} 
+\begin{equation}
+    {W}= {M - 1} = {2^{k} - 1}
+\end{equation}
+where:
+\begin{conditions}
+    M & Number of sequence numbers\\
+    k & Number of bits used to code sequence numbers \\
+\end{conditions}
+
 \paragraph{}
 \textbf{Efficiency:}
 \begin{itemize}
-    \item If $W \geq 1 + 2*a \Rightarrow S = 1$.
-    \item If $W < 1 + 2*a \Rightarrow S = W \div (1 + 2*a)$.
+    \item If $W \geq 1 + 2a \Rightarrow S = 1$.
+    \item If $W < 1 + 2a \Rightarrow S = \frac{W}{1 + 2a}$.
 \end{itemize}
 
+\paragraph{}
+\textbf{Efficiency with Errors:}
 \begin{figure}[H]
     \centering
     \includegraphics[width=7cm]{go-back-n-eff.png}
@@ -426,17 +411,80 @@ occur.
 \textbf{Sender:} Retransmits only the frames signaled by SREJ.
 
 \paragraph{}
-STILL WORKING ON \newline
-Adequate if W (a) is very large. \newline
-Maximum window size $W = M \div 2 = 2^(k-1)$.
+\textbf{Maximum window size(W):}
+\begin{equation}
+    {W}= \frac{M}{2} = 2^{k-1}
+\end{equation}
+where:
+\begin{conditions}
+    M & Number of sequence numbers\\
+    k & Number of bits used to code sequence numbers \\
+\end{conditions}
 
+\textbf{Efficiency:}
 \begin{figure}[H]
     \centering
     \includegraphics[width=7cm]{selective-repeat-eff.png}
     \caption{pe - frame error probability (ratio, FER)}
 \end{figure}
 
+\subsubsection{Useful Formulas for All Methods}
+
+\paragraph{}
+\textbf{Data transmission time ($T_f$):}
+\begin{equation}
+    {T_f}=\frac{L}{R}
+\end{equation}
+where:
+\begin{conditions}
+   L     &   Frame Size\\
+   R &  Data Rate 
+\end{conditions}
+
+\paragraph{}
+\textbf{Propagation Delay($T_{prop}$):}
+\begin{equation}
+    {T_{prop}}=\frac{d}{V}
+\end{equation}
+where:
+\begin{conditions}
+   d     &   Distance between sender and receiver \\
+   V &  Propagation Velocity
+\end{conditions}
+
+\paragraph{}
+\textbf{SUMETHIN(a)}
+\begin{equation}
+    {a}=\frac{T_{prop}}{T_f}
+\end{equation}
+where:
+\begin{conditions}
+    T_{prop}    &  Propagation Delay \\
+   T_f     &  Data transmission time 
+\end{conditions}
+
+\textbf{Maximum Rat($R_{max}$):}
+\begin{equation}
+    {R_{max}}={S}\times{R}
+\end{equation}
+where:
+\begin{conditions}
+   S     &  Efficiency\\
+   R &  Data rate
+\end{conditions}
+
+\textbf{Round Trip Time(RTT - Time of transmission and acknowledgement of a frame):} 
+\begin{equation}
+    {RTT}= 2 \times {T_{prop}} + {T_f}
+\end{equation}
+where:
+\begin{conditions}
+   T_{prop}     &  Propagation Delay\\
+   T_f &   Data transmission time
+\end{conditions}
+
 \subsection{Framing, Error detection and ARQ in common networks}
 \subsection{Reliability in the Protocol Stack}
 
 \end{document}
+

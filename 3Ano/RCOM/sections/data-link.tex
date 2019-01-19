@@ -207,7 +207,7 @@ the packet.
 \subsubsection{Parity Check}
 
 \paragraph{}
-\textbf{Simple Parity Check}
+\textbf{Simple Parity Check:}
 One parity bit added to every k information bits so that:
 \begin{itemize}
     \item The total number of bits 1 even (even parity).
@@ -232,7 +232,74 @@ k + 1 bits. However, does not detect even number of errors in a block of k + 1 b
 
 
 \subsubsection{Cyclic Redundancy Check (CRC)}
-NOT DONE YET!!!
+\paragraph{}
+A fixed number of check bits are appended to the message to be transmitted. 
+Data receivers check on the check value attached by finding the remainder of the 
+polynomial division of the contents transmitted. If it seems that an error has 
+occurred, a negative acknowledgement is transmitted asking for data retransmission.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=5cm]{CRC-frame.png}
+\end{figure}
+
+The bit string is represented as a polynomium (i.e. $110011 \Rightarrow x^5+x^4+x
++1$)
+
+\paragraph{}
+\textbf{How to compute the check bits: R(x)?}
+\begin{itemize}
+    \item Choose a generator string G(x) of length r+1 bits.
+    \item Choose R(x) such that T(x) is a multiple of $G(x): T(x)=A\times G(x)$.
+\end{itemize}
+
+\paragraph{}
+\textbf{Generating R(x):}
+\begin{equation}
+R(x) = {M(x)x^r}\ \textbf{mod}\ {G(x)}
+\end{equation}
+
+\paragraph{}
+Choice of G(x) is very important! ($G(x)=x^r+…+1$)
+
+\paragraph{}
+\textbf{Generating R(x) example:}
+\paragraph{}
+Assume for example:
+\begin{itemize}
+    \item r=3.
+    \item $G(x)=x^3 + 1 \Rightarrow 1001$.
+    \item $M(x)=x^5+x^4+x^2+1 \Rightarrow 110101$.
+\end{itemize}
+
+\paragraph{}
+Then:
+\begin{itemize}
+    \item $x^r = x^3$.
+    \item $M(x)\times x^3 = x^8+x^7+x^5+x^3 \Rightarrow 110101000$.
+    \item $R(x) = M(x)x^3\ \textbf{mod}\ G(x) = 110101000\ \textbf{mod}\ 1001
+    = 011 = x^1 + 1$
+\end{itemize}
+
+\paragraph{}
+\textbf{Checking at the Receiver}
+\begin{itemize}
+    \item Divide T(x) by G(x):
+    \begin{itemize}
+        \item If the remainder $R(x) = 0 \Rightarrow$ no errors.
+        \item If the remainder $R(x) != 0 \Rightarrow$ errors have occurred.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{}
+\textbf{Performance:}
+\paragraph{}
+For r check bits per frame the following can be detected
+\begin{itemize}
+    \item All patterns of 1, 2, or 3 errors (d > 3).
+    \item All bursts of errors of r or fewer bits.
+    \item All errors consisting of an odd number of inverted bits.
+\end{itemize}
 
 
 \subsection{Automatic Repeat reQuest (ARQ)}

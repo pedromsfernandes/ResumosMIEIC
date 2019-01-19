@@ -1,7 +1,11 @@
 \documentclass[../resumosRCOM.tex]{subfiles}
+\usepackage{array}
+
+\newenvironment{conditions}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
  
 \begin{document} 
-\section{The Data Link Layer}
 \subsection{Data Link layer functions and services}
 \subsubsection{Main functions}
 \begin{itemize}
@@ -232,11 +236,118 @@ expected.  When the receiver sends an ACK, it includes the sequence number of th
 packet it expects.  This way, the receiver can detect duplicated frames by checking if the
 frame sequence numbers alternate.
 
+
+\paragraph{}
+\textbf{Data transmission time:}
+\begin{equation}
+    {T_f}=\frac{L}{R}
+\end{equation}
+where:
+\begin{conditions}
+    T_f    &  Data transmission time \\
+   L     &   Frame Size\\
+   R &  Data Rate 
+\end{conditions}
+
+
+\paragraph{}
+\textbf{Propagation Delay:}
+\begin{equation}
+    {T_{prop}}=\frac{d}{V}
+\end{equation}
+where:
+\begin{conditions}
+    T_{prop}    &  Propagation Delay \\
+   d     &   Distance between sender and receiver \\
+   V &  Propagation Velocity
+\end{conditions}
+
+\paragraph{}
+\textbf{SUMETHIN}
+\begin{equation}
+    {a}=\frac{T_{prop}}{T_f}
+\end{equation}
+where:
+\begin{conditions}
+    a &  SUMETHIN\\
+    T_{prop}    &  Propagation Delay \\
+   T_f     &  Data transmission time 
+  
+\end{conditions}
+
 \paragraph{}
 \textbf{Efficiency:}
-STILL WORKING ON
-Inefficient when Tprop > Tf ( a > 1 ). Sends only one frame per Round-Trip Time 
-($RTT = 2*Tprop+Tf$).
+\begin{equation}
+    {S}=\frac{T_f}{T_f + 2 \times T_{prop}} = \frac{1}{1+2a}
+\end{equation}
+where:
+\begin{conditions}
+    S    &  Maximum Efficiency \\
+   T_f     &   Data transmission time\\
+   T_{prop} &  Propagation Delay 
+\end{conditions}
+
+\textbf{Maximum Rate:}
+\begin{equation}
+    {R_{max}}={S}\times{R}
+\end{equation}
+where:
+\begin{conditions}
+    R_{max}   &  Maximum Rate: \\
+   S     &  Efficiency\\
+   R &  Data rate
+\end{conditions}
+
+\textbf{Round Trip Time: (Time of transmission and acknowledgement of a frame)} 
+\begin{equation}
+    {RTT}= 2 \times {T_{prop}} + {T_f}
+\end{equation}
+where:
+\begin{conditions}
+    RTT   &  Round Trip Time \\
+   T_{prop}     &  Propagation Delay\\
+   T_f &   Data transmission time
+\end{conditions}
+
+\textbf{Frame Error Probability} 
+\begin{equation}
+    {p_e/FER}= {1-(1- BER)^{n}} 
+\end{equation}
+where:
+\begin{conditions}
+    p_e/FER & frame error probability \\
+    BER & Bit Error Ratio \\
+    n & frame length
+
+\end{conditions}
+
+\textbf{Probability of k Attempts required to transmit a frame with success} 
+\begin{equation}
+    {P[A=k]}= {p_e}^{k-1} {(1-p_e)} 
+\end{equation}
+where:
+\begin{conditions}
+    p_e & frame error probability
+\end{conditions}
+
+\textbf{Expected number of Attempts to transmit a frame with success} 
+\begin{equation}
+    {E[A]}= \frac{1}{1-p_e} 
+\end{equation}
+where:
+\begin{conditions}
+    p_e & frame error probability
+\end{conditions}
+
+\textbf{Efficiency with Errors} 
+\begin{equation}
+    {S}= \frac{T_f}{E[A](T_f + 2 \times T_{prop})} = \frac{1-p_e}{1+2a}
+\end{equation}
+where:
+\begin{conditions}
+    p_e & frame error probability
+\end{conditions}
+
 
 
 \subsubsection{Go Back N}

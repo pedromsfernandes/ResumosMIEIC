@@ -151,10 +151,180 @@ using \textbf{byte stuffing}.
 \end{figure}
 
 \subsubsection{Flag bits with bit stuffing}
+\begin{itemize}
+    \item Each frame begins and ends with a special bit pattern (01111110 / 0x7E).
+    \item When the sender finds five consecutive 1 bits in the data, it stuffs a 0 bit
+    into the outgoing bit stream.
+    \item When the receiver finds five consecutive incoming 1 bits, followed by a 0
+    bit, it destuffs the 0 bit.    
+\end{itemize}
 
+\paragraph{}
+\textbf{Advantages:}
+\begin{itemize}
+    \item The boundary between two frames is unambiguously recognized by the
+    flag pattern (flag sequences can only occur at frame boundaries and never
+    within the data).
+    \item Frames can contain an arbitrary number of bits made up of units of any
+    size.
+    \item Ensures a minimum density of transitions that help the physical layer
+    maintain synchronization. 
+\end{itemize}
+
+\paragraph{}
+\textbf{Both byte and bit stuffing:}
+\begin{itemize}
+    \item Are completely transparent to the network layer in both computers.
+    \item Have a frame length that depends on the contents of the data.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{bit-stuffing-mechanism.png}
+\end{figure}
+
+\paragraph{}
+Many data link protocols use a combination of these methods for safety.
 
 \subsection{Error detection}
 \subsection{Automatic Repeat reQuest (ARQ)}
+\paragraph{}
+An error-control method for data transmission that uses acknowledgements
+(messages indicating whether or not the message has been correctly received)
+and timeouts to achieve reliable data transmission over an unreliable service.
+This mechanisms automatically request the retransmission of:
+\begin{itemize}
+    \item Missing packets.
+    \item Packets with errors.
+\end{itemize}
+
+\paragraph{}
+There are three common ARQ schemes:
+
+\subsubsection{Stop and Wait}
+\begin{itemize}
+    \item  Sender transmits information frame I and waits for positive confirmation
+    ACK from receiver.
+    \item Receiver receives I frame:
+    \begin{itemize}
+        \item If I frame has no error sends ACK.
+        \item If I frame has error sends NACK.
+    \end{itemize}
+    \item Sender receives I frame:
+    \begin{itemize}
+        \item If ACK, proceeds and transmits new frame.
+        \item If NACK, retransmits frame I.
+    \end{itemize} 
+    \item If I, ACK or NACK is lost a timeout is required!
+\end{itemize}
+
+\textbf{Issue:}
+If the transmitter times-out and sends a packet twice, the receiver cannot tell whether
+the second frame is a retransmission or a new frame transmission.
+
+\textbf{Solution:}
+Define a 1 bit sequence number in the header of the frame.
+
+\paragraph{}
+This sequence number alternates (from 0 to 1) in subsequent frames. The transmitter sends
+a frame with a sequence number attached to it so the receiver can check if it matches the 
+expected.  When the receiver sends an ACK, it includes the sequence number of the next 
+packet it expects.  This way, the receiver can detect duplicated frames by checking if the
+frame sequence numbers alternate.
+
+\paragraph{}
+\textbf{Efficiency:}
+STILL WORKING ON
+Inefficient when Tprop > Tf ( a > 1 ). Sends only one frame per Round-Trip Time 
+($RTT = 2*Tprop+Tf$).
+
+
+\subsubsection{Go Back N}
+\paragraph{}
+Allows the transmission of new packets before earlier ones are acknowledged.
+
+\paragraph{}
+\textbf{Sender:}
+\begin{itemize}
+    \item May transmit up to W frames without receiving RR(Receiver Ready = ACK).
+    \item I frames are numbered sequentially I(NS): I(0), I(1), I(2), etc.
+    \item Cannot send I(NS=i+W) until it has received the RR(NR=i).   
+\end{itemize}
+
+\paragraph{}
+\textbf{Receiver:}
+\begin{itemize}
+    \item Does not accept frames out of sequence.
+    \item Sends RR(NR) to sender indicating:
+    \begin{itemize}
+        \item That all the packets up to NR-1 have been received in sequence.
+        \item The sequence number, NR, of the next expected frame.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{}
+\textbf{Behaviour under Errors}
+\begin{itemize}
+    \item Frame with errors is silently discarded by the Receiver.
+    \item If Receiver receives Data frame out of sequence:
+    \begin{itemize}
+        \item First out-of-sequence-frame: Receiver sends REJ(NR) where NR =
+        next in-sequence frame expected.
+        \item Following out-of sequence-frames: Receiver discards them; no REJ
+        sent.                
+    \end{itemize}
+    \item When Sender receives REJ(NR=x), the Sender:
+    \begin{itemize}
+        \item Goes-Back and retransmits I(x), I(x+1), etc.
+        \item Continues using Sliding Window mechanism.
+    \end{itemize}
+    \item If timeout occurs, the Sender:
+    \begin{itemize}
+        \item Requests the Receiver to send a RR message.
+        \item Sends a special message (RR command message).
+    \end{itemize}
+\end{itemize}
+
+\paragraph{}
+\textbf{Efficiency:}
+\begin{itemize}
+    \item If $W \geq 1 + 2*a \Rightarrow S = 1$.
+    \item If $W < 1 + 2*a \Rightarrow S = W \div (1 + 2*a)$.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{go-back-n-eff.png}
+    \caption{pe - frame error probability (ratio, FER)}
+\end{figure}
+
+\subsubsection{Selective Repeat}
+\paragraph{}
+Similar to \textbf{Go Back N}, however it does not discard successful frames when errors
+occur.
+
+\paragraph{}
+\textbf{Receiver:}
+\begin{itemize}
+    \item Accepts out of sequence frames.
+    \item Confirms negatively, SREJ, a frame not arrived.
+    \item Uses RR to confirm blocks of frames arrived in sequence.    
+\end{itemize}
+
+\paragraph{}
+\textbf{Sender:} Retransmits only the frames signaled by SREJ.
+
+\paragraph{}
+STILL WORKING ON \newline
+Adequate if W (a) is very large. \newline
+Maximum window size $W = M \div 2 = 2^(k-1)$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{selective-repeat-eff.png}
+    \caption{pe - frame error probability (ratio, FER)}
+\end{figure}
+
 \subsection{Framing, Error detection and ARQ in common networks}
 \subsection{Reliability in the Protocol Stack}
 

@@ -28,10 +28,10 @@
     \item Packets of all traffic streams merged in a single quele (first-come, first-served)
 \end{itemize}
 
+\textbf{Important Variables and Expressions}
 \begin{description}
-    \item [\textbf{Important Variables and Expressions}]
     \item[L] \hfill \\ Length of packet
-    \item[T_{frame}] \hfill \\ time of transmition
+    \item[\(T_{frame}\)] \hfill \\ time of transmition
 \end{description}
 
 \begin{equation}
@@ -46,10 +46,10 @@
     \item Capacity of each channel = C/m
 \end{itemize}
 
+\textbf{Important Variables and Expressions}
 \begin{description}
-    \item [\textbf{Important Variables and Expressions}]
     \item[L] \hfill \\ Length of packet
-    \item[T_{frame}] \hfill \\ time of transmition
+    \item[\(T_{frame}\)] \hfill \\ time of transmition 
     \item[m] \hfill \\ number of divisions
     \item[W] \hfill \\ channel bandwidth
 \end{description}
@@ -65,10 +65,10 @@
     \item Communication -> m channels with capacity C/m
 \end{itemize}
 
+\textbf{Important Variables and Expressions}
 \begin{description}
-    \item [\textbf{Important Variables and Expressions}]
     \item[L] \hfill \\ Length of packet
-    \item[T_{frame}] \hfill \\ time of transmition
+    \item[\(T_{frame}\)] \hfill \\ time of transmition
     \item[m] \hfill \\ number of divisions
 \end{description}
 
@@ -89,14 +89,14 @@
     \item Customers (packet to be transmitted through a link) arrive at random times to obtain service (transmit a packet) 
 \end{itemize}
 
+\textbf{Important Variables and Expressions}
 \begin{description}
-    \item [\textbf{Important Variables and Expressions}]
-    \item[\lambda] \hfill \\ arrival rate
-    \item[\mu] \hfill \\ service rate
+    \item[\(\lambda\)] \hfill \\ arrival rate
+    \item[\(\mu\)] \hfill \\ service rate
     \item[N] \hfill \\ Average number of customers/packets in the network
     \item[T] \hfill \\ Average delay per packet -> waiting plus service times 
-    \item[\rho] \hfill \\ traffic intensity (occupation of the server)
-    \item[T_{pac(frame)}] \hfill \\ Service time = packet transmission time
+    \item[\(\rho\)] \hfill \\ traffic intensity (occupation of the server)
+    \item[\(T_{pac(frame)}\)] \hfill \\ Service time = packet transmission time
 \end{description}
 
 \begin{equation}
@@ -109,10 +109,10 @@
 
 \subsubsection{M/M/1 Queue}
 
+\textbf{Important Variables and Expressions}
 \begin{description}
-    \item [\textbf{Important Variables and Expressions}]
-    \item[T_{W}] \hfill \\ average waiting time
-    \item[N_{W}] \hfill \\ average number of clients waiting
+    \item[\(T_{W}\)] \hfill \\ average waiting time
+    \item[\(N_{W}\)] \hfill \\ average number of clients waiting
 \end{description}
 
 \begin{equation}
@@ -134,7 +134,7 @@
 \subsubsection{M/D/1 Queue}
 
 \begin{equation}
-    T_{W} = \lambdaE(T_{pac(frame)}^2)/2(1-\rho)
+    T_{W} = \lambda E(T_{pac(frame)}^2)/2(1-\rho)
 \end{equation}
 
 \end{document}

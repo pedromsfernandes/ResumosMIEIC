@@ -1,9 +1,35 @@
-\documentclass[../resumosRCOM.tex]{subfiles}
- 
-\begin{document} 
+\documentclass{article}
+\usepackage[utf8]{inputenc}
 
-\subsection{Network}
-:Network label - camada responsável pela transferência de pacotes
+\title{RCOM Network}
+\author{up201606673-André Esteves}
+\date{18 January 2019}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Network}
+Network label - camada responsável pela transferência de pacotes
+
+\subsection{Exercises}
+(1º part) (2º part)
+\begin{enumerate}
+    \item 2018 Recurso (7,9) (3)
+    \item 2018 Normal (2,7,9) (3)
+    \item 2017 Normal (1,8) (3)
+    \item 2016 Recurso (6,7) (3)
+    \item 2016 Normal (7) (3)
+    \item 2015 Normal (1,7) (3)
+    \item 2014 Normal (2,7,9) (3)
+    \item 2013 Normal (7) (3)
+    \item 2012 Normal (6,7,8) (3)
+    \item 2011 Normal (6,7,8) (3)
+    \item 2010 Normal (2,4) (3)
+\end{enumerate}
 
 \subsection{Overview}
 \begin{itemize}
@@ -86,6 +112,11 @@ Contém prefixos e a respetiva porta de saída <Endereço/Mask, port>
     \includegraphics[width=12cm]{images/RCOM5.png}
 \end{center}
 
+\subsubsection{Exame 2016 Recurso - Ex:6}
+\begin{center}            
+    \includegraphics[width=12cm]{images/RCOM48.png}
+\end{center}
+
 \subsection{Arquitetura do router}
 \begin{itemize}
     \item Funções principais:
@@ -143,6 +174,10 @@ Contém prefixos e a respetiva porta de saída <Endereço/Mask, port>
                 \includegraphics[width=5cm]{images/RCOM8.png}
             \end{center}
         \end{itemize}
+        Exame 2016 Normal - Ex.7
+        \begin{center}
+            \includegraphics[width=12cm]{images/RCOM51.png}
+        \end{center}
     \end{itemize}
 \end{itemize}
 
@@ -247,9 +282,34 @@ De Notar: - Uma subrede xx.xx.xx.0/24 suporta 255 endereços, no entanto, dois j
     \includegraphics[width=12cm]{images/RCOM21.png}
 \end{center}
 
+\textbf{Exercício: Exame 2018R-ultima questao (3)}
+Considere que a uma empresa foi atribuído o bloco de endereços IP 20.20.20.128/26. A empresa tem um rede de comunicações com a arquitetura descrita na figura, composta por 4 routers (R1, R2, R3, R4) e 3 switches Ethernet. 
+Um dos switches serve 24 computadores, outro serve 13 computadores e o terceiro interliga os routers R1, R2 e R3. Os routers R3 e R4 estão interligados por uma ligação ponto-a-ponto, à qual foi atribuído o endereço de rede 20.20.20.180/30.
+
+\begin{center}
+    \includegraphics[width=12cm]{images/RCOM40.png}
+\end{center}
+\textbf{a) Calcule os endereços de rede associados às redes indicadas}
+\begin{center}
+    \includegraphics[width=12cm]{images/RCOM41.png}
+\end{center}
+\textbf{b) Atribua endereços IP às interfaces dos routers R1, R2, R3 e R4. Use os endereços mais baixos de cada sub-rede. Numa sub-rede atribua os endereços mais baixos aos routers de índice Ri mais baixo. Por exemplo, o endereço de R3.eth1 deverá ser inferior ao endereço R4.eth0.}
+\begin{center}
+    \includegraphics[width=12cm]{images/RCOM42.png}
+\end{center}
+\textbf{c) Escreva a tabela de encaminhamento do router R2. Este router deverá ser capaz enviar pacotes para todos os endereços IP unicast. Use o menor número possível de entradas na tabela.}
+\begin{center}
+    \includegraphics[width=14cm]{images/RCOM43.png}
+\end{center}
+\textbf{Fazer pergunta 3 (last question) de todos os exames. É igual, apenas alterando os valores dos IPs}
+
 \textbf{função IP forwarding (importante)}
 \begin{center}
     \includegraphics[width=15cm]{images/RCOM22.png}
+\end{center}
+\textbf{Exame 2018N - Exercicio 7}
+\begin{center}
+    \includegraphics[width=15cm]{images/RCOM45.png}
 \end{center}
 
 \subsection{Address Resolution Protocol APR}
@@ -301,6 +361,7 @@ De Notar: - Uma subrede xx.xx.xx.0/24 suporta 255 endereços, no entanto, dois j
     \end{itemize}
 \end{itemize}
 
+(Com o seguinte gráfico analisar pergunta 7 do exame 2018N)
 \begin{center}
     \includegraphics[width=12cm]{images/RCOM26.png}
 \end{center}
@@ -321,10 +382,50 @@ De Notar: - Uma subrede xx.xx.xx.0/24 suporta 255 endereços, no entanto, dois j
 \begin{center}
     \includegraphics[width=12cm]{images/RCOM29.png}
 \end{center}
-    
+
+\subsubsection{Question 8 - Exame 2017N}
+\begin{center}
+    \includegraphics[width=12cm]{images/RCOM47.png}
+\end{center}
+
 \subsection{ICMP - Internet Message Control Protocol}
 
 - Usado pelo router ou host para mandar mensagens de erro ou de controlo (como o ping)
+
+\subsubsection{Exame 2017N Ex:1}
+\begin{center}
+    \includegraphics[width=12cm]{images/RCOM46.png}
+\end{center}
+
+\subsubsection{Exame 2018N Ex:2}
+\begin{center}
+    \includegraphics[width=12cm]{images/RCOM44.png}
+\end{center}
+
+\subsubsection{Exame 2016 Recurso - Ex:7}
+\begin{center}            
+    \includegraphics[width=12cm]{images/RCOM50.png}
+\end{center}
+\subsubsection{Exame 2013 Recurso - Ex:7}
+\begin{center}            
+    \includegraphics[width=14cm]{images/RCOM53.png}
+\end{center}
+
+\subsubsection{se o computador do segmento C fizer ping ao Computador do segmento A, indique os endereços IP e MAC constantes do pacote que transporta a mensagem ICMP Echo Request no segmento A. (Questão 2018R-ex:9)}
+\begin{center}
+    \includegraphics[width=15cm]{images/RCOM49.png}
+\end{center}
+R: IP origem = 6, IP destino = 1, MAC origem = 4, MAC destino = 1.\newline
+\subsubsection{Exame 2014 Normal - Ex:9)}
+\begin{center}
+    \includegraphics[width=15cm]{images/RCOM52.png}
+\end{center}
+
+\subsubsection{Exame 2010 Normal - Ex:4 e 5)}
+\begin{center}
+    \includegraphics[width=15cm]{images/RCOM54.png}
+\end{center}
+
 
 \subsubsection{IP datagramas info:}
 \begin{center}

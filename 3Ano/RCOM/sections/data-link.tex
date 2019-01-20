@@ -549,6 +549,104 @@ where:
    T_f &   Data transmission time
 \end{conditions}
 
+\subsection{Framing, Error detection and ARQ in common networks}
+\subsubsection{Ethernet}
+\begin{itemize}
+    \item \textbf{Framing:} 
+    \begin{itemize}
+        \item Start of Frame - preamble + SFD.
+        \item End of Frame - end of signal transitions(Manchester code).
+    \end{itemize}
+    \item \textbf{Error Detection:} CRC using ITU-32 (common polynomial for G(x)).
+    \item \textbf{No ARQ:} 
+    \begin{itemize}
+        \item Bit Error ratio (BER) very low.
+        \item Frame Error Ratio (FER) low.
+        \item CRC/FCS strong: good detection of error frames.
+    \end{itemize}
+\end{itemize}
+\subsubsection{Point to Point Protocol}
+\begin{itemize}
+    \item \textbf{Framing:} FLAGS - 0x7E; Byte Stuffing - 0x7D.
+    \item \textbf{Error Detection:} Can be negotiated.
+    \item \textbf{No ARQ.}
+\end{itemize}
+\subsubsection{Wireless LAN}
+\begin{itemize}
+    \item \textbf{Framing:}
+    \begin{itemize}
+        \item Synchronization.
+        \item Start Frame Delimiter.
+        \item Length: Payload length in us.
+    \end{itemize}
+    \item \textbf{Error Detection:} CRC (Header Error Check) using ITU-16 (common polynomial for G(x)).
+    \item \textbf{ARQ:} Modified version of Stop and Wait .
+\end{itemize}
+\subsubsection{High-Level Data Link Control}
+\begin{itemize}
+    \item \textbf{Framing:} FLAGS and bit stuffing.
+    \item \textbf{Error Detection:} CRC using ITU-16 (common polynomial for G(x)).
+    \item \textbf{ARQ:} Selective Repeat.
+    \item Used as basis for many telecom networks.
+\end{itemize}
+
+
+
+\subsection{Reliability in the TCP/IP Reference Model}
+\paragraph{}
+The TCP/IP reference model assumes:
+\begin{itemize}
+    \item Every data link layer offers an error free service to the upper layer.
+    \item Service Data Units are:
+    \begin{itemize}
+        \item Delivered to upper layer without error.
+        \item Discarded.
+    \end{itemize} 
+\end{itemize}
+\paragraph{}
+The layered model transforms bit error in packet losses.
+Therefore, packet losses must be repaired.
+Two strategies can be used:
+\subsubsection{Link-by-Link ARQ}
+\begin{itemize}
+    \item Repairs losses link by link.
+    \item Requires network elements to 
+    \begin{itemize}
+        \item Remember information about packet flows $\Rightarrow$ High processing 
+        per frame/packet.
+        \item Store packets in case they have to be retransmitted $\Rightarrow$
+        Memory required.
+    \end{itemize}
+\end{itemize}
+\subsubsection{End-to-End ARQ}
+\begin{itemize}
+    \item Low complexity : Intermediate network elements (switches, routers) become 
+    simple.
+    \item Packets may follow different end to end paths.
+    \item Not acceptable when Packet Loss Ratio is high
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{end-to-end.png}
+\end{figure}
+
+\subsubsection{ARQ in the TCP/IP Reference Model}
+\paragraph{}
+The TCP/IP architecture assumes that:
+\begin{itemize}
+    \item The Data Link layer provides error-free packets to the network layer.
+    \item Data link layer provides a service with very low FER.
+    \item End-to-End ARQ is used, implemented at Transport or Application Layers.
+\end{itemize}
+
+\paragraph{}
+In the TCP/IP reference model, packet losses are repaired:
+\begin{itemize}
+    \item At the Data Link layer on lossy channels (e.g. wireless data links).
+    \item At the end systems (transport layer or application layer).
+\end{itemize}
+
+
 \subsection{Data Link Layer Some Exam Exercises - Part 2 Only}
 \paragraph{}
 \textbf{Note: } 

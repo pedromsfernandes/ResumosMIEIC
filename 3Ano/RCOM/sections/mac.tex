@@ -88,8 +88,7 @@ destination station;
     \includegraphics[scale=0.3]{Mac_1.png}
     \caption{Station behaviour}
 \end{figure}
-\newline
-\newline
+
 \subsubsection{Slotted ALOHA}
 In the Slotted ALOHA, the time is divided into time slots and each slot corresponds to one frame.
 \newline
@@ -123,13 +122,18 @@ A transmitter attempts to determine whether another transmission is in progress 
         \item Collision vulnerability time = 2*Tprop;
         \item Collision probability = a = Tprop/Tframe;
 \end{itemize}
-\newline
-\newline
 \textbf{CSMA Variants:}
 \begin{itemize}
         \item CSMA \textbf {1-persistent:} If the channel is idle (free), the stations sends its data. Otherwise, if the channel is busy, the station just waits until it becomes idle. Then the station transmits a frame.
         \item CSMA \textbf {Non-persistent:} If the channel is idle, the stations sends its data. Otherwise, if the channel is busy, the station waits a random time and repeats algorithm
-        \item CSMA \textbf {p-persistent:} If the channel is idle, it transmits with a probability p. With a probability q = 1 − p, it defers until the next slot. If that slot is also idle, it either transmits or defers again, with probabilities p and q. This process is repeated until either the frame has been transmitted or another station has begun transmitting. In the latter case, the unlucky station acts as if there had been a collision. If the station initially senses that the channel is busy, it waits until the next slot and applies the algorithm above.
+        \item CSMA \textbf {p-persistent:} If the channel is idle, it transmits 
+        with a probability p. With a probability $q = 1 - p$, it defers until the 
+        next slot. If that slot is also idle, it either transmits or defers again, 
+        ith probabilities p and q. This process is repeated until either the frame 
+        has been transmitted or another station has begun transmitting. In the latter 
+        case, the unlucky station acts as if there had been a collision. If the station
+         initially senses that the channel is busy, it waits until the next slot and 
+         applies the algorithm above.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -195,7 +199,7 @@ Usage of the communication resource is disciplined by some turning mechanisms.
     \end{itemize}
 \end{itemize}
 \subsection{MAC}
-\newline
+
 The standard for wireless LANs is called IEEE 802.11, aka WiFi.
 \newline
 The most common type of wired LANs is called IEEE 803.2, aka Ethernet.

@@ -35,7 +35,7 @@
 \end{description}
 
 \begin{equation}
-    T_{frame} = L/C
+    T_{frame} = \frac{L}{C}
 \end{equation}
 
 \subsection{Frequency Division Multiplexing}
@@ -55,7 +55,7 @@
 \end{description}
 
 \begin{equation}
-    T_{frame} = Lm/C
+    T_{frame} = \frac{Lm}{C}
 \end{equation}
 
 \subsection{Time Division Multiplexing}
@@ -73,7 +73,7 @@
 \end{description}
 
 \begin{equation}
-    T_{frame} = Lm/C
+    T_{frame} = \frac{Lm}{C}
 \end{equation}
 
 \subsection{Queue Models}
@@ -100,11 +100,11 @@
 \end{description}
 
 \begin{equation}
-    T_{pac(frame)} = L/C = 1/\mu
+    T_{pac(frame)} = \frac{L}{C} = \frac{1}{\mu}
 \end{equation}
 
 \begin{equation}
-    \rho = \lambda/\mu
+    \rho = \frac{\lambda}{\mu}
 \end{equation}
 
 \subsubsection{M/M/1 Queue}
@@ -116,25 +116,25 @@
 \end{description}
 
 \begin{equation}
-    N = \rho/1-\rho = \lambda/\mu-\lambda
+    N = \frac{\rho}{1-\rho} = \frac{\lambda}{\mu-\lambda}
 \end{equation}
 
 \begin{equation}
-    T = 1/\mu-\lambda
+    T = \frac{1}{\mu-\lambda}
 \end{equation}
 
 \begin{equation}
-    T_{W} = T - T_{S} = 1/\mu-\lambda - 1/\mu = \rho/\mu(1-\rho)
+    T_{W} = T - T_{S} = \frac{1}{\mu-\lambda} - \frac{1}{\mu} = \frac{\rho}{\mu(1-\rho)}
 \end{equation}
 
 \begin{equation}
-    N_{W} = T_{w}\lambda = \lambda/\mu-\lambda - \lambda/\mu = N - \rho
+    N_{W} = T_{w}\lambda = \frac{\lambda}{\mu-\lambda} - \frac{\lambda}{\mu} = N - \rho
 \end{equation}
 
 \subsubsection{M/D/1 Queue}
 
 \begin{equation}
-    T_{W} = \lambda E(T_{pac(frame)}^2)/2(1-\rho)
+    T_{W} = \frac{\lambda E(T_{pac(frame)}^2)}{2(1-\rho)}
 \end{equation}
 
 \end{document}

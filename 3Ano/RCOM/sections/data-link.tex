@@ -3,7 +3,7 @@
 \newenvironment{conditions}
   {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
   {\end{tabular}\par\vspace{\belowdisplayskip}}
- 
+
 \begin{document} 
 \subsection{Data Link layer functions and services}
 \subsubsection{Main functions}
@@ -350,12 +350,12 @@ frame sequence numbers alternate.
 \paragraph{}
 \textbf{Efficiency(S):}
 \begin{equation}
-    {S}=\frac{T_f}{T_f + 2 \times T_{prop}} = \frac{1}{1+2a}
+    {S_{max}}=\frac{T_f}{T_f + 2 \times T_{prop}} = \frac{1}{1+2a}
 \end{equation}
 where:
 \begin{conditions}
-   T_f     &   Data transmission time\\
-   T_{prop} &  Propagation Delay 
+   T_f     &   Data transmission time (ms)\\
+   T_{prop} &  Propagation Delay (ms)
 \end{conditions}
 
 \textbf{Probability of k Attempts required to transmit a frame with success} 
@@ -446,7 +446,7 @@ where:
 \end{conditions}
 
 \paragraph{}
-\textbf{Efficiency:}
+\textbf{Efficiency: (\%)}
 \begin{itemize}
     \item If $W \geq 1 + 2a \Rightarrow S = 1$.
     \item If $W < 1 + 2a \Rightarrow S = \frac{W}{1 + 2a}$.
@@ -503,8 +503,8 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-   L     &   Frame Size\\
-   R &  Data Rate 
+   L     &   Frame Size (bit) \\
+   R &  Data Rate (kbit/s or bit/s)
 \end{conditions}
 
 \paragraph{}
@@ -514,8 +514,8 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-   d     &   Distance between sender and receiver \\
-   V &  Propagation Velocity
+   d     &   Distance between sender and receiver (m) \\
+   V &  Propagation Velocity (m/s)
 \end{conditions}
 
 \paragraph{}
@@ -525,8 +525,19 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-    T_{prop}    &  Propagation Delay \\
-   T_f     &  Data transmission time 
+    T_{prop}    &  Propagation Delay (ms or s) \\
+   T_f     &  Data transmission time (ms or s)
+\end{conditions}
+
+\paragraph{}
+\textbf{Debito maximo($Deb_{max}$)}
+\begin{equation}
+    {Deb_{max}}={R_{max}}\times{S_{max}}
+\end{equation}
+where:
+\begin{conditions}
+   S & Efficiency (\%) \\
+   R & Data Rate (bit/s)
 \end{conditions}
 
 \textbf{Maximum Rate($R_{max}$):}
@@ -535,8 +546,8 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-   S     &  Efficiency\\
-   R &  Data rate
+   S     &  Efficiency (\%) \\
+   R &  Data rate (bit/s)
 \end{conditions}
 
 \textbf{Round Trip Time(RTT - Time of transmission and acknowledgement of a frame):} 
@@ -545,8 +556,8 @@ where:
 \end{equation}
 where:
 \begin{conditions}
-   T_{prop}     &  Propagation Delay\\
-   T_f &   Data transmission time
+   T_{prop}     &  Propagation Delay (s or ms) \\
+   T_f &   Data transmission time (s or ms)
 \end{conditions}
 
 \subsection{Framing, Error detection and ARQ in common networks}

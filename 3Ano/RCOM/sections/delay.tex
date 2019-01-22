@@ -1,5 +1,5 @@
 \documentclass[../resumosRCOM.tex]{subfiles}
- 
+
 \begin{document} 
 \subsection{Communication Link}
 
@@ -91,12 +91,16 @@
 
 \textbf{Important Variables and Expressions}
 \begin{description}
-    \item[\(\lambda\)] \hfill \\ arrival rate
-    \item[\(\mu\)] \hfill \\ service rate
+    \item[\(\lambda\)] \hfill \\ arrival rate - pacotes processados na porta de saída (pac/s)
+    \item[\(\mu\)] \hfill \\ service rate (pac/s)
     \item[N] \hfill \\ Average number of customers/packets in the network
-    \item[T] \hfill \\ Average delay per packet -> waiting plus service times 
+    \item[T] \hfill \\ Average delay per packet -> waiting plus service times ($\mu s$)
     \item[\(\rho\)] \hfill \\ traffic intensity (occupation of the server)
     \item[\(T_{pac(frame)}\)] \hfill \\ Service time = packet transmission time
+    \item[\(L\)] \hfill \\ tamanho médio de cada pacote (bit)
+    \item[\(C\)] \hfill \\ capacidade da porta (bit/s)
+    \item[\(Debito\)] \hfill \\ (bit/s) $Debito=\lambda\times L$
+    
 \end{description}
 
 \begin{equation}

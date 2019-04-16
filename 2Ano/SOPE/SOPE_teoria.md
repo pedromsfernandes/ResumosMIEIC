@@ -172,11 +172,11 @@ Pontos de vista de um sistema operativo:
     
 **Registos do processador**
 
--   PC -> Program Counter - contem o endereço da próxima instrução
+-   PC -> Program Counter - Contém o endereço da próxima instrução
     
--   IR -> Instruction register - Contem a instrução atual
+-   IR -> Instruction register - Contém a instrução atual
     
--   PSW -> Processor Status Word – Contem informação acerca do estado do processador, interrupção, flags (carry, zero, overflow…)
+-   PSW -> Processor Status Word – Contém informação acerca do estado do processador, interrupção, flags (carry, zero, overflow…)
     
 -   SP -> Stack Pointer – Aponta para o topo da stack
     
@@ -203,7 +203,7 @@ Permitem que o processador continue a executar enquanto decorre uma operação d
 
 **Processamento de interrupções**
 
-A rotina a executar em resposta a uma interrupção e determinada com base num vetor de interrupções.
+A rotina a executar em resposta a uma interrupção é determinada com base num vetor de interrupções.
 
 Cada plataforma de hardware tem um procedimento particular para cada interrupção.
 
@@ -249,7 +249,7 @@ Gestão eficiente de I/O -> responsabilidade do SO
 
 -   Polling
     
--   Interrupçao
+-   Interrupção
     
 -   Acesso direto a memoria (DMA)
     
@@ -261,7 +261,7 @@ O modulo de I/O indica o seu estado num Status Register.
 
 Não há interrupções.
 
-O processador esta sempre ocupado a verificar o estado do módulo de I/O.
+O processador está sempre ocupado a verificar o estado do módulo de I/O.
 
 Problemas quando o dispositivo de I/O é lento.
 
@@ -269,7 +269,7 @@ Problemas quando o dispositivo de I/O é lento.
 
 Quando o I/O se completar é gerada uma interrupção pelo dispositivo de I/O.
 
-Mais eficiente que Polling mas o processador continua responsável pela transferência de dados entre a memoria e o dispositivo de I/O.
+Mais eficiente que Polling mas o processador continua responsável pela transferência de dados entre a memória e o dispositivo de I/O.
 
 **Acesso direto à memória (DMA)**
 
@@ -281,9 +281,9 @@ Em caso de I/O:
     
 -   O processador continua a executar outras instruções
     
--   O dispositivo de I/O transfere a informação diretamente de/para a memoria
+-   O dispositivo de I/O transfere a informação diretamente de/para a memória
     
--   Quando o DMA termina e gerada uma interrupção
+-   Quando o DMA termina é gerada uma interrupção
     
 
 **Proteção do hardware**
@@ -292,7 +292,7 @@ Em caso de I/O:
 
 2 modos de operação: utilizador e supervisor
 
-O computador arranca em modo supervisor, o SO e carregado e da inicio aos processos do utilizador em modo utilizador.
+O computador arranca em modo supervisor, o SO é carregado e dá início aos processos do utilizador em modo utilizador.
 
 Quando ocorre uma exceção (interrupção) o hardware comuta para modo de supervisor.
 
@@ -310,17 +310,17 @@ Definir todas as opções de I/O como privilegiadas, as quais os utilizadores n�
 
 Fundamental proteger: vetor de interrupções e rotinas de serviço de interrupção
 
-Proteção da área de memoria de cada utilizador:
+Proteção da área de memória de cada utilizador:
 
 -   feita por hardware
     
--   2 registos que só podem ser manipulados pelo SO determinam a gama de endereços validos a que um programa pode aceder.
+-   2 registos que só podem ser manipulados pelo SO determinam a gama de endereços válidos a que um programa pode aceder.
     
 **Proteção do processador**
 
 Impedir que um programa do utilizador tome conta do processador indefinidamente e não retorne ao controlo ao SO.
 
-Usar um timer que apos um período especificado interrompe o programa em execução.
+Usar um timer que após um período especificado interrompe o programa em execução.
 
 As instruções de manipulação do timer são privilegiadas.
 
@@ -377,13 +377,13 @@ Um SO com multiprogramação necessita de suporte de hardware:
  
 ### Serviços do S.O. 
  * **Tipos (facilitam o programador):** criação de programas (editores e debuggers), execução de programas, acesso a dispositivos de I/O, acesso a ficheiros, comunicações, detecção de erros/falhas, contabilidade de utilização,... 
- * **Serviços que garantem a eficiência do sistema:** Alocação de serviços, contabilidade do sistema, protecção (impedir que um processo interfira com outros) e segurança (acessos não autorizados).
+ * **Serviços que garantem a eficiência do sistema:** Alocação de serviços, contabilidade do sistema, proteção (impedir que um processo interfira com outros) e segurança (acessos não autorizados).
 
 ### Programas de Sistema
 * Fornecem um ambiente conveniente .
 * Alguns programas são interfaces simples usadas para chamadas ao sistema.
 * O interpretador de comandos é o programa de sistema mais importante.
-* **Programas:** edição de texto, manipulação de ficheiros e directórios, informação de estado, suporte a linguagens de programação, 
+* **Programas:** edição de texto, manipulação de ficheiros e diretórios, informação de estado, suporte a linguagens de programação, 
 carregamento e execução de programas, comunicações,...
 
 ### Estrutura de um S.O. 
@@ -410,7 +410,7 @@ deixando um kernel mínimo.
 		- gestão básica da CPU
 		- comunicação entre processos
 		- suporte de I/O
-	* A restante funcionalidade do S.O. é implementada em proc.os de sistema que correm em modo de utilizador. Estes processos comunicam entre si através de mensagens (modelo cliente-servidor) .
+	* A restante funcionalidade do S.O. é implementada em processos de sistema que correm em modo de utilizador. Estes processos comunicam entre si através de mensagens (modelo cliente-servidor) .
 
 ### Estruturas de alguns S.O.'s LINUX
 * Estrutura essencialmente monolítica.
@@ -418,7 +418,7 @@ deixando um kernel mínimo.
 * O kernel tem uma camada portável (independente) e outra não portável (não dependente) da arquitectura do hardware.
 
 #### Arquitectura do UNIX - Características
-* Multitasking, multiutilizador . Kernel monólitico.
+* Multitasking, multiutilizador . Kernel monolítico.
 #### Características do Windows 2000/XP
 * Sistema multitasking com um único utilizador
 * Suporta multiprocessamento simétrico
@@ -453,15 +453,15 @@ i.e. processos que estejam à espera de instruções I/O são bloqueados permiti
 
   Multiprogramação com preempção – O S.O. decide quando ceder a CPU
 
-“ sem preempção – Os processos decidem quando ceder a CPU
+  Multiprogramação sem preempção – Os processos decidem quando ceder a CPU
 
- Multiprogramação é o contrário de Uniprogramação (apenas um processos em execução)
+ Multiprogramação é o contrário de Uniprogramação (apenas um processo em execução)
 
   #### Dificuldades de implementação:
 
 -   Necessidade de proteção de recursos e controlo de acesso a memória, periféricos, …
     
--   Hardwear com características especiais (dois modos de funcionamento, registos especiais, …)
+-   Hardware com características especiais (dois modos de funcionamento, registos especiais, …)
     
 -   Comunicação entre processos independentes
     
@@ -541,7 +541,7 @@ dispatcher - dá o controlo da CPU ao processo seleccionado
     
 -   gestão dos PCB’s
     
-**Criação de um processo***
+**Criação de um processo**
 
 -   Criação de estruturas (PCB, …)
     
@@ -572,7 +572,7 @@ Sistemas baseados em threads:
   
   Semelhanças com Processos Tradicionais (_Heavyweight Processes_)
 
--   Estado (pronto, a executas, bloqueado, …)
+-   Estado (pronto, a executar, bloqueado, …)
     
 -   Partilha de CPU
     

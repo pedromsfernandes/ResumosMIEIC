@@ -301,7 +301,7 @@ Retorno: 0 se ok, -1 se erro
 #### Utilização
 1. Enviar dados de processo para outro
 2. Sincronizar dois processos (usar dois pipes)
-3.  Ligar stout de um processo a stdin de outro
+3.  Ligar stdout de um processo a stdin de outro
 	 - duplicar descritores de um pipe para a stdin de um processo e stdout de outro.
 
 #### Funções `popen` e  `pclose`
@@ -323,7 +323,8 @@ Retorna: termination status de `cmdstring` se OK; -1 se houve erro
 
 Estes comandos são úteis para **filtros**: um programa lê da stdin e escreve para stdout. Outro programa utiliza-o, criando um pipeline com as funções acima.
 ### FIFOS
-Tipo de ficheiro. Tem um nome e pode ser visto no sistema de ficheiros.
+Tipo de ficheiro. Tem um nome e pode ser visto no sistema de ficheiros. 
+Pode ter vários processos a escrever nele, mas apenas 1 a ler a sua informação.
 No terminal existem os seguintes utilitários:
 
 `mkfifo nome //criar fifo com nome`
@@ -366,7 +367,8 @@ Exemplo de arquitetura comunicacional:
 #### Criar um FIFO
 
 ```c
-
+ char * myfifo = "/tmp/myfifo"; //Path do FIFO
+ mkfifo(myfifo, 0660); //Criar FIFO chamado myfifo na pasta tmp
 ```
 
 ## *Threads*
@@ -437,9 +439,17 @@ Para vários threads acederem ao mesmo conteúdo, este pode ser declarado com va
 
 
  ```c
- // Saber o tid da própria thread
+ // Saber o tid da própria thread : útil quando se pretende que uma thread se torne *detached*
 pthread_t pthread_self (void);
  ```
+
+Para tornar uma thread *detached*, utiliza-se o serviço:
+```c
+ int pthread_detach(pthread_t thread);
+ // thread é o indentificador da thread que se pretende tornar *detached*
+```
+Threads *detached* não são *joinable*, ou seja, é impossível esperar por elas com pthread_join(). 
+Este tipo de threads, quando terminam, libertam todos os seus recursos, incluindo o seu valor de retorn.
 
 
 ## Filas de Mensagens, Memória Partilhada, Semáforos, *Mutexes*, *Condition variables*

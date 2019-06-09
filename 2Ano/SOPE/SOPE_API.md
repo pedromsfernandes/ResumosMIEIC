@@ -1,4 +1,4 @@
-﻿# API do Unix
+# API do Unix
 
 ## Índice
 
@@ -88,8 +88,8 @@ Retorno: novo descritor se OK, -1 se erro
 Exemplo:
 ```c
 /*
-Cada vez que se receber algo de stdin,
-na verdade vai parar a fd
+Cada vez que se tentar ler algo de stdin,
+na verdade eatá a ler-se de fd
 */
 dup2(fd, STDIN_FILENO);
 ```
@@ -160,18 +160,18 @@ pid_t fork(void);
 Retorna: 0 para filho, PID do filho para o pai, -1 se erro.
 Após chamada, ambos os processos executam o mesmo código (usar *ifs* com o valor de retorno).
 Após `fork`, não se sabe quem começa a executar primeiro.
-Filho fica com cópia do segmento de dados, *heap*, e *stack*.
+Filho fica com cópia do segmento de dados, *heap* e *stack*.
 O processo filho pode aceder e alterar as variáveis declaradas antes de `fork()`, sem que essas alterações se sintam no processo pai.
 ```c
 pid_t getpid(void); /* Obter a PID do próprio processo */
 pid_t getppid(void); /* Obter a PID do processo-pai */
 ```
 ### Processos *zombie*
-Processo que terminou mas cujo pai ainda não executou um `wait`.
+Processo que terminou mas cujo pai ainda não aceitou o seu código de retorno, através de um `wait` ou `waitpid`.
 
 ### As funções `wait` e `waitpid`
 Usando estas funções, o pai espera pela terminação do filho, aceitando o seu código.
-Quando processo termina, é enviado ao pai o sinal `SIGCHLD`.
+Quando o processo termina, é enviado ao pai o sinal `SIGCHLD`.
 ```c
 pid_t wait(int *statloc);
 pid_t waitpid(pid_t pid, int *statloc, int options);
@@ -231,6 +231,7 @@ Retorna: apontador para o handler anterior
 signal(SIGINT, SIG_IGN);
 ```
 
+Ao ignorar o sinal SIG_CHLD, não são criados processos zombie.
 
 ### Tratamento dos sinais após `fork` /` exec`
 Após `fork`:
@@ -280,16 +281,16 @@ Permitem que dois processos a correr no mesmo computador enviem dados um ao outr
 
 ### *Pipes* vs FIFOS
 Em ambos, os dados apenas podem fluir num sentido.
-Os pipes têm que ser usados por processos com antecessor comum, enquanto que no caso dos FIFOs estes não têm que ser relacionados.
+Os pipes têm que ser usados por processos com um antecessor comum, enquanto que no caso dos FIFOs estes não têm que ser relacionados.
 
 ### Pipes
 Funcionalidade:
 
  - Criar pipe;
  - Invocar `fork`;
- - Escritor fecha extremidade de leitura, leitor fecha de escrita.   
-- Usar `write` e `read`;  
-- No final, fechar outras extremidades
+ - Escritor fecha extremidade de leitura, leitor fecha de escrita.
+ - Usar `write` e `read`;
+ - No final, fechar outras extremidades
 
 `fd[0]` -> aberto para leitura
 `fd[1]` -> aberto para escrita
@@ -330,6 +331,8 @@ No terminal existem os seguintes utilitários:
 `mkfifo nome //criar fifo com nome`
 
 `rm nome // elimina fifo com nome`
+ou
+`unlink nome`
 
 A API fornece as seguintes funções:
 
@@ -359,6 +362,8 @@ Escrita para FIFO que não está aberto para leitura - `SIGPIPE`
 int unlink (const char *pathname);
  ```
 
+**Nota:** Quando a chamada a unlink() é executada, é apagada a sua referência do diretório correspondente e a contagem de *links* é decrementada. No entanto, o FIFO não será fisicamente apagado até que a contagem de *links* se torne 0.
+
 Exemplo de arquitetura comunicacional:
 ![arquitetura](https://i.imgur.com/Y4VGjSN.png)
  
@@ -384,8 +389,7 @@ void * (*func)(void *), void *arg);
  - `attr`
     atributos do *thread*, normalmente `NULL` (valor por defeito)
  - `func`
-	 função executada pelo *thread*,
-	  do género:
+	 função executada pelo *thread*, do género:
 	  ```c
 	  void* func(void* arg)
 	 ```
@@ -398,10 +402,12 @@ Mas, se terminar com chamada `pthread_exit()`, os outros *threads* continuam em 
  ```c
 void pthread_exit (void *status);
  ```
-Não retorna.
+Esta chamada não retorna para o processo ou *thread* que a invocou.
 
+
+Para esperar que uma *thread* termine e receber o seu código de retorno, chama-se a seguinte função:
 ```c
-// Thread bloqueia até que thread tid terminar.
+// Thread bloqueia até que thread tid termine.
 int pthread_join (pthread_t tid, void **status);
  ```
 
@@ -449,7 +455,8 @@ Para tornar uma thread *detached*, utiliza-se o serviço:
  // thread é o indentificador da thread que se pretende tornar *detached*
 ```
 Threads *detached* não são *joinable*, ou seja, é impossível esperar por elas com pthread_join(). 
-Este tipo de threads, quando terminam, libertam todos os seus recursos, incluindo o seu valor de retorn.
+
+Este tipo de threads, quando terminam, libertam todos os seus recursos, incluindo o seu valor de retorno.
 
 
 ## Filas de Mensagens, Memória Partilhada, Semáforos, *Mutexes*, *Condition variables*
@@ -462,7 +469,10 @@ Correndo na mesma máquina:
  - Memória partilhada
 
 ### Semáforos
-Semáforos com nome podem ser partilhados por vários processos, sem nome por processos com acesso a memória comum
+Semáforos com nome podem ser partilhados por vários processos, sem nome por processos com acesso a memória comum.
+
+Das seguintes funções, sem_open(), sem_close() e sem_unlink() apenas podem ser utilizadas com semáforos com nome, e sem_init() e sem_destroy() com semáforos sem nome. Todas as outras funções podem ser utilizadas por ambos os tipos de semáforos.
+ 
 ```c
 sem_t* sem_open(char* name, int flags, mode_t mode, unsigned value);
 int sem_unlink(char* name);
@@ -478,6 +488,7 @@ int sem_post(sem_t* sem);
 `name` deve ter '/' no início.
 
 Exemplo:
+
 Uma *thread*, antes de aceder a variável partilhada, executa
 `sem_wait()` com o semáforo associado; 
 no final, executa `sem_post()` com o outro semáforo.
@@ -490,12 +501,11 @@ int shm_open(const char *name, int oflag, mode_t mode);
 
 int shm_unlink(const char *name);
 
-/* Especifica tamanho da região de 
-memória partilhada identificada por fd */
+/* Especifica tamanho da região de memória partilhada identificada por fd */
 int ftruncate(int fd, off_t length);
 
 /*
-junta região de memória partilhada ao espaço de enderaçemento do processo
+Junta região de memória partilhada ao espaço de enderaçemento do processo
 */
 void* mmap(void *start, size_t length, int prot , int flags,
 int fd, off_t offset);
@@ -530,25 +540,34 @@ const pthread_mutexattr_t *attr);
 ```
 **Lock e unlock**
 ```c
+/* 
+ tenta adquirir o mutex, se já estiver locked, bloqueia até que fique unlocked 
+*/
 int pthread_mutex_lock (pthread_mutex_t *mutx);
-/* tenta adquirir o mutex, se já estiver locked, 
-bloqueia até que fique unlocked */
+
+/* 
+ se estiver unlocked, faz lock, senão retorna EBUSY 
+*/
 int pthread_mutex_trylock (pthread_mutex_t *mutx);
-/* se estiver unlocked, faz lock, senão
-retorna EBUSY */
+
+/* 
+ faz unlock do mutex, retorna erro se já estiver unlocked ou se estiver na posse de outro thread 
+*/
 int pthread_mutex_unlock (pthread_mutex_t *mutx);
-/* faz unlock do mutex, retorna erro se já estiver unlocked
- ou estiver na posse de outro thread */
+
+/* 
+ destrói o mutex 
+*/
 int pthread_mutex_destroy (pthread_mutex_t *mutx);
-/* destrói o mutex */
 ```
+
 #### *Condition variables*
 *Mutexes* permitem sincronização no acesso aos dados, trancando-o;
 *Condition variables* permitem sincronização com base no valor dos dados, esperando.
 
 Sem *condition variable*s, se um programa quisesse esperar por certa condições teria que estar continuamente a testar esse valor, consumindo tempo de processador.
 Com elas, não há *busy-waiting*.
-Devem se **sempre** usadas a par com *mutexes* (ver exemplo em baixo).
+Devem ser **sempre** usadas a par com *mutexes* (ver exemplo em baixo).
 
 **Inicialização**
 Deve ser feita antes da invocação dos *threads* (preferivelmente, no *scope* global)
@@ -561,7 +580,7 @@ const pthread_condattr_t *attr);
 
 ```c
 /*
-bloqueia thread até condição se assinalar
+bloqueia thread até condição se assinalar, libertando o mutex associado
 deve ser chamada após pthread_mutex_lock()
 */
 int pthread_cond_wait (pthread_cond_t *cvar, pthread_mutex_t *mutx);
@@ -596,6 +615,8 @@ pthread_mutex_lock(&mut);
 pthread_cond_signal(&var);
 pthread_mutex_unlock(&mut);
 ```
+
+Neste exemplo, a condição deve ser verificada, porque, quando a thread obtiver o mutex, poderão ter sido alterados os valores das variáveis.
 
 ### Uso em processos
 *Mutexes* e *condition variables* podem ser partilhados entre processos se forem criados em memória partilhada e inicializados com um atributo que inclua a propriedade `PTHREAD_PROCESS_SHARED`.	

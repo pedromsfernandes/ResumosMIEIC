@@ -1,4 +1,4 @@
-﻿# Teoria dos Sistemas Operativos
+# Teoria dos Sistemas Operativos
 
 ## Índice
 1. Introdução
@@ -44,16 +44,16 @@ Melhoramento: Sobreposição das operações de entrada e de saída (I/O).
 
 ### Spooling
 
--   Forma de buffering: usar discos p/guardar temporariamente as I/O's.
+-   Forma de buffering: usar discos para guardar temporariamente as I/O's.
     
--   Permite sobrepor a fase de cálculo de um processo c/ a fase de I/O de outro.
+-   Permite sobrepôr a fase de cálculo de um processo com a fase de I/O de outro.
     
 
 **Multiprogramação**: Execução intercalada de processos.
 
 -   Várias tarefas são mantidas em memória simultaneamente, e a CPU é partilhada entre elas.
     
--   Quando o programa atual fica à espera que uma operação de I/O (p/mesmo dispositivo) se complete, o processador pode executar outro programa.
+-   Quando o programa atual fica à espera que uma operação de I/O (para o mesmo dispositivo) se complete, o processador pode executar outro programa.
     
 -   Necessita de:
     
@@ -106,7 +106,7 @@ Pontos de vista de um sistema operativo:
 
 1.  serviços que fornece.
     
-2.  interface que disponibiliza p/ utilizadores e programadores.
+2.  interface que disponibiliza para utilizadores e programadores.
     
 3.  seus componentes e interligações.
     
@@ -182,7 +182,7 @@ Pontos de vista de um sistema operativo:
     
 -   Registos do utilizador – Usado para vários fins, na programação
     
--   Outros – Gestão de memoria
+-   Outros – Gestão de memória
     
 **Interrupções**
 
@@ -251,13 +251,13 @@ Gestão eficiente de I/O -> responsabilidade do SO
     
 -   Interrupção
     
--   Acesso direto a memoria (DMA)
+-   Acesso direto a memória (DMA)
     
 **Polling**
 
-É o modulo de I/O que controla a ação, não o processador.
+É o módulo de I/O que controla a ação, não o processador.
 
-O modulo de I/O indica o seu estado num Status Register.
+O módulo de I/O indica o seu estado num Status Register.
 
 Não há interrupções.
 
@@ -340,7 +340,7 @@ Um SO com multiprogramação necessita de suporte de hardware:
     
 -   Mecanismo de interrupções com prioridades
     
--   Duplo como de operação do processador
+-   Duplo momo de operação do processador
     
 -   Mecanismo de proteção da memória
     
@@ -393,13 +393,15 @@ carregamento e execução de programas, comunicações,...
 
 #### Monolítica (primeiros S.O.'s) 
 * Não há estruturação. O S.O. é escrito como um conjunto de procedimentos, cada um dos quais pode chamar qualquer outro.
-* Há uma pequena estruturação.
+* Ou há uma pequena estruturação.
 * **Dificuldades:** difícil de compreender, difícil de modificar, pouco fiável, difícil de manter,...
 
 #### Em Camadas
-* O S.O. é dividido num certo numero de camadas (níveis), camada 0 - Hardware, camada de mais alto nível - interface com o utilizador.
+* O S.O. é dividido num certo número de camadas (níveis), camada 0 - Hardware, camada de mais alto nível - interface com o utilizador. 
 * É um sistema modular.
-* **Dificuldades:** Definição adequada das camadas, tende a ser menos eficiente do que outros tipos.
+* Cada camada só usa funções e serviços da camada inferior.
+* Uma camada não necessita de saber como as operações da camada inferior são implementadas, mas apenas o que elas fazem.
+**Dificuldades:** Definição adequada das camadas, tende a ser menos eficiente do que outros tipos.
 
 #### Microkernel
 * Tendência nos S.O.'s modernos:
@@ -451,9 +453,9 @@ Solução – execução concorrente de processos (multiprogramação)
 
 i.e. processos que estejam à espera de instruções I/O são bloqueados permitindo a execução de instruções CPU de outro processo
 
-  Multiprogramação com preempção – O S.O. decide quando ceder a CPU
+  Multiprogramação **com preempção** – O S.O. decide quando ceder a CPU
 
-  Multiprogramação sem preempção – Os processos decidem quando ceder a CPU
+  Multiprogramação **sem preempção** – Os processos decidem quando ceder a CPU
 
  Multiprogramação é o contrário de Uniprogramação (apenas um processo em execução)
 
@@ -1705,25 +1707,25 @@ Trata de determinar simultâneamente:
 
 **Estratégia da frequência de falta de página**
  
- Estratégia para evitar o thrashing mais simples do que a dos conjuntos de trabalho. 
+	Estratégia para evitar o thrashing mais simples do que a dos conjuntos de trabalho. 
 
-**Procedimento:**
- - Monitorizar a frequência de falta de páginas de um processo. 
- - Estabelecer um gama de frequências aceitáveis. 
- -  Acima de uma certa frequência atribuir mais um frame ao processo; se não houver frames disponíveis, suspender o processo. 
- - Abaixo de uma certa frequência, retirar um frame ao processo.
+	**Procedimento:**
+ 	- Monitorizar a frequência de falta de páginas de um processo. 
+ 	- Estabelecer um gama de frequências aceitáveis. 
+ 	-  Acima de uma certa frequência atribuir mais um frame ao processo; se não houver frames disponíveis, suspender o processo. 
+ 	- Abaixo de uma certa frequência, retirar um frame ao processo.
 
 #### ||Outras considerações||
 Além dos algoritmos de substituição de páginas e da estratégia de alocação de frames há outros factores a ter em conta:
 
- - **Pré-paginação:**
-Procura evitar o elevado nº de faltas de página que surgem através da paginação a pedido carregando mais páginas do que as exigidas pela falta de página, procurando aproveitar o facto de, o carregamento consecutivo poder ser mais rápido do que o individual.
+ 	- **Pré-paginação:**
+	Procura evitar o elevado nº de faltas de página que surgem através da paginação a pedido carregando mais páginas do que as exigidas pela falta de página, procurando aproveitar o facto de, o carregamento consecutivo poder ser mais rápido do que o individual.
 
 	 - **Interesse duvidoso:**
 		 - Pode ser vantajoso em algumas situações. 
-		 -  Pode acontecer que muitas das páginas carregadas não venham a ser usadas.
+		 - Pode acontecer que muitas das páginas carregadas não venham a ser usadas.
 
-- **Tamanho da página:**
+	- **Tamanho da página:**
 
 	Não existe um tamanho ideal. 
 
@@ -1738,7 +1740,7 @@ Procura evitar o elevado nº de faltas de página que surgem através da pagina�
 		 - A I/O é mais eficiente. (o overhead devido ao posicionamento da cabeça do disco pode pesar significativamente no tempo total de I/O de uma pág. pequena) 
 		 - Reduz o nº de faltas de página, a partir de certa dimensão das páginas.
 
-- **Estrutura de um programa**
+	- **Estrutura de um programa**
 
 	A performance de um programa pode ser melhorada se o programador estiver consciente do modo como é feita a paginação.
 
@@ -1749,7 +1751,7 @@ Procura evitar o elevado nº de faltas de página que surgem através da pagina�
 
 	A linguagem de programação utilizada também pode influenciar. Certas linguagens fazem uso intensivo de apontadores.
 
-- **Fixação de Páginas**
+	- **Fixação de Páginas**
 	- Alguns frames podem ser "fechados" (locked) isto é, as páginas neles contidas não podem ser substituídas ⇒ usar um lock bit.
 	- Impedir que uma página recentemente carregada seja substituída antes de ser usada pelo menos uma vez.
 

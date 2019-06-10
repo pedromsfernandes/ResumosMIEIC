@@ -640,8 +640,8 @@ Algoritmo de escalonamento depende da distribuição de bursts
 -   Escalonamento a médio prazo – Resolução de escassez de recursos (Executado com intervalos de segundos/minutos)
     
 -   Escalonamento a curto prazo (_de facto_) – resolução de alteração de estado dos processos. Executado com intervalos de centenas de milissegundos. Pode ser:
-	- preemtivo: o processo pode ser forçado a ceder CPU
-	- não preemptivo: o processo executa até bloquear ou ceder a vez voluntariamente
+	- **preemptivo**: o processo pode ser forçado a ceder CPU
+	- **não preemptivo**: o processo executa até bloquear ou ceder a vez voluntariamente
     
 
 **Critérios de escolha de algoritmos de escalonamento**
@@ -750,7 +750,7 @@ Execução concorrente – Execução logicamente ao mesmo tempo (multiprograma�
 Execução em paralelo - Execução fisicamente ao mesmo tempo (multiprocessamento)
 
   
-Processos a correr ao mesmo tempo precisam de partilhar dados/recurso, por isso é necessários protege-los de erros / inconsistências.
+Processos a correr ao mesmo tempo precisam de partilhar dados/recursos, por isso é necessário protegê-los de erros / inconsistências.
 
 Erros comuns envolvem dar update a variáveis partilhadas por vários processos, **race conditions** (vários processos manipulam dados ao mesmo tempo e o resultado da execução depende da ordem de acesso) e condições sobre variáveis que são alteradas por outros processos.
 
@@ -797,9 +797,13 @@ While (flag[j] && turn == j) {}
 flag[i] = false;
 ```
 
+Análise do algoritmo:
+- Garante a exclusão mútua das secções críticas, o progresso e uma espera limitada
+- A sua implementação para mais de 2 processos é complicada
+
 **Algoritmo da padaria** (para n processos)
 
-Antes de entrar na SC cada processo tira um ticket e entra quem tiver ticket mais pequeno (desempate por PID)
+Antes de entrar na SC cada processo tira um ticket e entra quem tiver ticket mais pequeno (desempate por PID caso vários processos recebam o mesmo número)
 
 Variavéis partilhadas:
 
@@ -847,7 +851,7 @@ Limitações das soluções por software:
 
 Sistemas uniprocessador:
 
-Para garantir exclusão mutua basta inibir interrupções
+Para garantir exclusão mútua basta inibir interrupções
 
 Processo Pi:
 ```
@@ -866,18 +870,20 @@ While Test_and_Set(Lock) {}
 {SecçãoCrítica}
 Lock = false;
 ```
-Não satisfaz a condição de espera limitada.
+Não satisfaz a condição de espera limitada. A seleção do próximo processo a executar a secção crítica é arbitrária (um processo pode ficar indefinidamente à espera).
 
 Instrução **Swap**: Troca o valor de 2 variáveis atomicamente
 ```
+//Variáveis partilhadas: Lock: Boolean (valor inicial: false)
+
 Key = true;
-While (Key == false) {Swap(Lock, Key);}
+do {Swap(Lock, Key);} while(Key != false);
 {Secção Crítica}
 Lock = false;
 ```
 _**Spinlock**_:
 
-Mecanismo de sincronização em que um processo espera num ciclo testando se o lock está disponível (busy waiting, garante exclusão mutua).
+Mecanismo de sincronização em que um processo espera num ciclo testando se o lock está disponível (busy waiting, garante exclusão mútua).
 
 Operações: 
 - `InitLock {lock = false}`
@@ -947,9 +953,7 @@ Problemas clássicos de sincronização:
     
 -   Problema dos Leitores/Escritores
     
-**Construções de alto nível**
-
-**p/ exclusão mútua e sincronização**
+**Construções de alto nível para exclusão mútua e sincronização**
 
 (monitores, regiões críticas e passagem de mensagens)
 
@@ -965,7 +969,7 @@ Módulo de software constituído por
 
 Só são visíveis os procedimentos, os dados locais são inacessíveis, a entrada no monitor apenas é possível por uma chamada e só um processo pode estar a executar no monitor de cada vez.
 
-Assim, é fácil implementar a exclusão mútua. A sincronização é obtida através de _**conditional variables**_.
+Assim, é fácil implementar a exclusão mútua. A sincronização é obtida através de _**condition variables**_.
 
 Os monitores podem ser implementados recorrendo a semáforos e vice-versa. Tal como nos semáforos é possível cometer erros de sincronização com os monitores.
 
@@ -985,7 +989,7 @@ Caso seja false, o processo espera até que B == true e nenhum outro processo es
 
 **Passagem de mensagens**
 
-Semáforos e monitores resolvem o problema de exclusão múltipla em sistemas com 1+ CPUs com memória comum, mas não podem ser usados em sistemas distribuídos.
+Semáforos e monitores resolvem o problema de exclusão múltipla em sistemas com 1 ou mais CPUs com memória comum, mas não podem ser usados em sistemas distribuídos.
 
 Por outro lado, passagem de mensagens pode ser usada em sistemas com memória partilhada bem como em sistemas distribuídos.
 
@@ -1005,7 +1009,7 @@ Condições necessárias para a ocorrência de um deadlock:
 
 - **Exclusão Mútua:** Só um processo pode usar um recurso de cada vez.
 - **Retém e Espera:** Um processo pode deter recursos enquanto espera pela atribuição de outros recursos.
-- **Não preempção dos recursos :** Quando um processo detém um recursos, só ele o pode libertar.
+- **Não preempção dos recursos :** Quando um processo detém um recurso, só ele o pode libertar.
 - **Espera Circular:** Deve existir um conjunto de processos {P1, P2, ..., Pn} tal que:
 	-  P1 está a espera de um recurso que P2 detém.
 	-  P2 está a espera de um recurso que P3 detém. 
@@ -1067,7 +1071,7 @@ Não conceder recursos a um processo se  houver possibilidade de occorrer um dea
 - Utilidade prática limitada. 
 - Overhead necessário para detectar os estados seguros.
 
-**||Detetação e Recuperação||**
+**||Deteção e Recuperação||**
 
 Os recursos são concedidos se estiverem disponíveis. Periodicamente detecta-se a ocorrência de deadlocks. Se existir deadlock, aplica-se uma estratégia de recuperação.
 #### Deteção
@@ -1145,7 +1149,7 @@ Os deadlocks ocorrem essencialmente nos processos do utilizador, não nos proces
     
 ### Conceitos:
 
-- **overlay** : (técnica de sobreposição) permite carregar partes diferentes de um programa na mesma memória (alturas diferentes) corre processos que ocupem mais memória do que a mem física disponível
+- **Overlay** : (técnica de sobreposição) permite carregar partes diferentes de um programa na mesma memória (alturas diferentes) corre processos que ocupem mais memória do que a memória física disponível
 
 - **Recolocação**: capacidade de carregar e executar um dado programa num lugar arbitrário de memória
 
@@ -1174,9 +1178,9 @@ Os deadlocks ocorrem essencialmente nos processos do utilizador, não nos proces
 
 ### Sistemas
 
-Monoprogramação: 1 processo em memória de cada vez; pode ocupar memoria toda alocada ao user, necessário usar **overlay** para processos que ocupam mais memoria do que a física
+Monoprogramação: 1 processo em memória de cada vez; pode ocupar memória toda alocada ao user, necessário usar **overlay** para processos que ocupam mais memória do que a física
 
-Multiprogramação: tem que haver **recolocação**, proteção (diferenciar espaços de end do SO e das aplicações) e partilha (cooperação processos)
+Multiprogramação: tem que haver **recolocação**, proteção (diferenciar espaços de endereço do SO e das aplicações) e partilha (cooperação processos)
 
 Criação de programa executável
 ![](https://i.imgur.com/Zy7kcOY.png)
@@ -1196,7 +1200,7 @@ Ocorre durante a execução do programa, pode ser deslocado em memória durante 
 
  **Linking**
 
-Ligação estática: cada modulo é criado com referências relativas ao inicio do módulo e todos os módulos são colocados num único módulo recolocável com referências relativas ao inicio do módulo global
+Ligação estática: cada módulo é criado com referências relativas ao inicio do módulo e todos os módulos são colocados num único módulo recolocável com referências relativas ao inicio do módulo global
 
 Ligação dinâmica:
 
@@ -1210,9 +1214,9 @@ Vantagens: permite alterar rotinas da biblioteca sem recompilar programas; permi
 
 **Loading**
 
-Absoluto: programa sempre carregado no mesmo endereço inicial; referencias a memoria absolutas; atribuição de endereços é feita pelo programador, pelo assembler ou pelo compilador
+Absoluto: programa sempre carregado no mesmo endereço inicial; referências a memória absolutas; atribuição de endereços é feita pelo programador, pelo assembler ou pelo compilador
 
-Recolocável: Local onde o programa é carregado é variável; assembler produz endereços relativos ao inicio
+Recolocável: Local onde o programa é carregado é variável; assembler produz endereços relativos ao início
 
 Dinâmico em run time: permite **swapping**; Geração de endereços absolutos só é feita quando a intrução é efetivamente executada (com suporte de hardware)
 
@@ -1224,21 +1228,21 @@ Endereçamento real e virtual
 
 Real: endereço é igual ao acedido na memória do computador (endereço físico)
 
-Desvantangens: dimensão do programa limitada à dimensão da memoria fisica
+Desvantangens: dimensão do programa limitada à dimensão da memória fisica
 
-Programa so pode funcionar nos endereços físicos para que foi escrito
+Programa só pode funcionar nos endereços físicos para que foi escrito
 
 Lógico ou virtual: endereços gerados pelo programa são convertidos pela **MMU**
 
 ### **Swapping** e partilha de memória
 
-Seleciona processos que vao sofrer swap-out (processos bloqueados ou baixa prioridade) e substitui-os por processos que vão sofrer swap-in.
+Seleciona processos que vão sofrer swap-out (processos bloqueados ou baixa prioridade) e substitui-os por processos que vão sofrer swap-in.
 
 Swap-file: ficheiro que guarda as imagens dos processos que sofreram swap-out, apenas 1 swap-file mas cada processo tem uma imagem associada
 
-Swapping complica partilha de memória, para facilitar, as regiões de memória partilhada podem ser reservadas no espaço de endereçamento do SO e este passa a cada app o endereço dessas regiões.
+Swapping complica partilha de memória. Para facilitar, as regiões de memória partilhada podem ser reservadas no espaço de endereçamento do SO e este passa a cada aplicação o endereço dessas regiões.
 
-### **Particão Fixa**
+### **Partição Fixa**
 
 Memória destinada a processos do utilizador está dividida em blocos de tamanho fixo (podem ser diferentes entre si).
 
@@ -1248,7 +1252,7 @@ Mecanismo de protecção: par de registos onde são carregados os endereços má
 
 Desvantagens: o nº de partições limita o nº de processos activos; utilização ineficiente da memória, quando os processos são pequenos
 
-### **Particão Dinâmica**
+### **Partição Dinâmica**
 
 Inicialmente existe uma única partição, ocupando toda a memória. Quando é executado um programa→ alocar zona de memória para o colocar. Idem, para os programas seguintes.
 
@@ -1287,22 +1291,24 @@ Procedimento:
 
 - dividir a memória lógica em blocos de tamanho igual aos quadros chamados páginas
 
-- paginas de um processo são carregados em qualquer um quadro que esteja livre
+- páginas de um processo são carregados em qualquer quadro que esteja livre
 
-- OS mantém uma tabela de páginas, por cada processo, onde faz a correspondência pagina/frames
+- S.O. mantém uma tabela de páginas, por cada processo, onde faz a correspondência página/frames
 
 Hardware de suporte:
 nPágina = EndereçoLógico DIV TamanhoPágina;
 endBase = TabelaPáginas [nPágina ];
 offset =  EndereçoLógico MOD TamanhoPágina;
 EndereçoFísico = endBase  + offset 
-(a nível práticos as paginas têm tamanho com potencia de 2 para facilitar as contas)
+**ou**
+EndereçoFísico = frame*TamanhoPágina + offset
+**NOTA:** a nível prático as páginas têm tamanho com potência de 2 para facilitar as contas
 
 **Extração direta**
 Um endereço lógico tem duas partes: O número da página e o offset.  
 Os bits do número da página são os mais significativos, e o contrário para o offset. Para determinar onde se faz a divisão, pegar no tamanho da página, e transformar em potência de 2: o expoente representa o número de bits do offset.
 
-Os endereços físicos são constituídos por número de frame (parte mais significativa) e pelo offset.
+**Os endereços físicos são constituídos por número de frame (parte mais significativa) e pelo offset.**
 
 ![](https://i.imgur.com/wtJOgkW.png)
   
@@ -1356,7 +1362,7 @@ Cada elemento aponta para uma tabela de páginas com 2^p2 elementos.
 
 Em geral, o comprimento máximo de cada tabela de páginas não pode ser superior à dimensão 
 
-Vantagem : evitar ter todas as tab.s de páginas em memória, simultâneamente.
+Vantagem : evitar ter todas as tabelas de páginas em memória, simultaneamente.
 
 **Paginação de páginas hashed**
 
@@ -1377,9 +1383,9 @@ Usando pid e p como chave na tabela de páginas, descobrir o offset dessa “cha
 
 Desvantagens:
 
-- A tabela de páginas deixa de conter informação acerca do espaço de endereçamento lógico de um processo (necessária quando a página referenciada não está em memória) ⇒ manter uma tab. de pág.s convencional, por cada processo, em mem. Secundária
+- A tabela de páginas deixa de conter informação acerca do espaço de endereçamento lógico de um processo (necessária quando a página referenciada não está em memória) ⇒ manter uma tabela de páginas convencional, por cada processo, em memória secundária
 
-- Aumento do tempo de acesso à memória (devido ao acesso intermédio à tabela de hash ou a pesquisa sequencial) Solução : usar memória associativa p/ manter informação acerca dos acessos mais recentes
+- Aumento do tempo de acesso à memória (devido ao acesso intermédio à tabela de hash ou a pesquisa sequencial). Solução : usar memória associativa para manter informação acerca dos acessos mais recentes
 
 **Tamanho da página**
 
@@ -1409,9 +1415,9 @@ Tradução de endereço lógico para físico:
 
 » Extrair, do endereço lógico, o número do segmento (bits mais significativos).
 
-» Aceder à tabela de segmentos, usando este número, p/ obter o endereço físico do início do segmento
+» Aceder à tabela de segmentos, usando este número, para obter o endereço físico do início do segmento
 
-» Comparar o deslocamento (bits menos significativos do endereço lógico) com o comprimento do segmento; se aquele for maior do que este o end.º é inválido.
+» Comparar o deslocamento (bits menos significativos do endereço lógico) com o comprimento do segmento; se aquele for maior do que este o endereço é inválido.
 
 
   ![](https://i.imgur.com/gySm8Pw.png)
@@ -1442,7 +1448,7 @@ Cada segmento é dividido em páginas de tamanho fixo (=tamanho dos quadros da m
 
 O deslocamento dentro do segmento traduz-se em nº de página + deslocamento dentro da página
 
-Cada segmento tem uma tab ela de páginas associada.
+Cada segmento tem uma tabela de páginas associada.
 
 ![](https://i.imgur.com/9n9cLpv.png)
 
@@ -1467,8 +1473,8 @@ Substituir um bloco de instruções ou dados armazenados com outros.
 Permite que programas sejam maiores que a memória principal do computador.
 
  -  Partes do programa, identificadas pelo programador, são compiladas e linkadas de modo a poderem correr nos endereços da secção de overlay. 
- -  Um overlay driver (sob controlo do programa) carrega diferentes overlays da memória secundária p/ a secção de overlay. 
- -  O carregamento é feito dinâmicamente: os procedimentos e dados são trazidos p/ memória quando necessário, através de código gerado pelo compilador (ex: a chamada a uma função testa primeiro se ela está em memória) 
+ -  Um overlay driver (sob controlo do programa) carrega diferentes overlays da memória secundária para a secção de overlay. 
+ -  O carregamento é feito dinamicamente: os procedimentos e dados são trazidos para memória quando necessário, através de código gerado pelo compilador (ex: a chamada a uma função testa primeiro se ela está em memória) 
  -  **Problema:** Os overlays não podiam referenciar-se mutuamente.
 
 #### ||Paginação a Pedido||
@@ -1484,18 +1490,18 @@ Semelhante à paginação convencional excepto que as páginas só são transfer
 **Quando é referenciada uma página (um endereço de memória):**
 - Referência Inválida ⇒ abortar .
 - Referência Válida e página não em memória ⇒ colocar em memória.
-- 
+
 **Bit de página válida/inválida (ou presente/ausente)**
 - Cada entrada da tabela de páginas tem um bit que indica se a página está ou não em memória (ex.: 1 = presente / 0 = ausente). 
-- Se o bit estiver a 0 ⇒ falta de página .
-- 
-**Falta de página (→ trap p/ o S.O.):** quando um programa acede a uma página mapeada no espaço de memória virtual, mas que não foi carregada na memória física do computador.
+- Durante a traduçaõ de endereço (lógico -> físico), se o bit estiver a 0 ⇒ falta de página .
+ 
+**Falta de página (→ trap para o S.O.):** quando um programa acede a uma página mapeada no espaço de memória virtual, mas que não foi carregada na memória física do computador.
 - Verificar na tabela de páginas se a referência é válida ou inválida. 
 -  Referência inválida ⇒ abortar 
-- Referência válida ⇒ continuar (trazer a página p/ mem. principal) .
+- Referência válida ⇒ continuar (trazer a página para memória principal) .
 -  Obter um frame livre . 
 - Ler a página necessária . 
-- Actualizar a tabela de páginas c/ indicação de que a pág. está em memória, e em que frame está. 
+- Actualizar a tabela de páginas com indicação de que a página está em memória, e em que frame está. 
 - Recomeçar a instrução interrompida devido à falta de página.
 
 **Performance da paginação a pedido** 
@@ -1582,19 +1588,18 @@ Tempo de acesso a disco:
 				 - Quando uma página é carregada pela 1ª vez o bit de referência é colocado em 1. 
 				 - Quando é necessário substituir uma página, percorrer os frames circularmente e a qualquer frame que tenha o bit de referência igual a 1 é dada uma 2ª oportunidade, colocando o bit de referência igual a 0, avançando para o frame seguinte.
 				 -  Se o bit de referência ainda estiver em 0 na 2ª passagem, a página é substituída.
+		 
+		 - **ALGORITMOS BASEADOS EM CONTAGENS**
+		 Manter um contador do nº de referências feitas a cada página.
+			 -  **ALGORITMO LFU - Least Frequently Used**
+				 -  Substituir a página com a contagem mais pequena.
+				 -  **Problema:** As páginas que foram muito usadas há muito tempo são mantidas em memória.
+				 - **Solução:** Técnica de envelhecimento: dividir a contagem por 2 com intervalos regulares.
 
-
-		- **ALGORITMOS BASEADOS EM CONTAGENS**
-		Manter um contador do nº de referências feitas a cada página.
-			-  **ALGORITMO LFU - Least Frequently Used**
-				-  Substituir a página com a contagem mais pequena.
-				-  **Problema:** As páginas que foram muito usadas há muito tempo são mantidas em memória.
-				- **Solução:** Técnica de envelhecimento: dividir a contagem por 2 com intervalos regulares.
-
-			  - **ALGORITMO MFU - Most Frequently Used**
+			 - **ALGORITMO MFU - Most Frequently Used**
 				  - Substituir a página com contagem mais elevada.
 
-			Estes algoritmos são pouco utilizados.
+			 Estes algoritmos são pouco utilizados.
 
 #### ||Buffering de páginas||
  Uma página substituída não é imediatamente retirada da memória interna é colocada numa de 2 listas:
@@ -1694,7 +1699,7 @@ Trata de determinar simultâneamente:
 	**A ideia:** Usar as necessidades recentes de um processo para adivinhar as necessidades futuras (reduzir a taxa de falta de páginas) baseado no princípio da localidade de referência.
 	
 	**Procedimento:** 
-	- Monitorizar o conjunto de trabalho de cada processo.  
+	- Monitorizar o conjunto de trabalho de cada processo.
 	- Um processo nunca será executado a não ser que o seu conjunto de trabalho esteja em memória principal. 
 	- Uma página não pode ser removida da memória se fizer parte do conjunto de trabalho de um processo.
 
@@ -1702,56 +1707,51 @@ Trata de determinar simultâneamente:
 	- O passado nem sempre ajuda a prever o futuro.
 	- Dificuldade em manter actualizado o conjunto de trabalho
 	- Determinar o valor óptimo de ∆:
-		-  **∆ demasiado pequeno:** Pode não englobar toda uma localidade (pág.s activamente usadas, em conjunto) 
-		- **∆ demasiado grande:** Pode englobar várias localidades e abranger mais pág.s do que o necessário.
+		 - **∆ demasiado pequeno:** Pode não englobar toda uma localidade (páginas activamente usadas, em conjunto) 
+		 - **∆ demasiado grande:** Pode englobar várias localidades e abranger mais páginas do que o necessário.
 
-**Estratégia da frequência de falta de página**
- 
-	Estratégia para evitar o thrashing mais simples do que a dos conjuntos de trabalho. 
-
+- **Estratégia da frequência de falta de página**
+Estratégia para evitar o thrashing mais simples do que a dos conjuntos de trabalho.
+	
 	**Procedimento:**
- 	- Monitorizar a frequência de falta de páginas de um processo. 
- 	- Estabelecer um gama de frequências aceitáveis. 
- 	-  Acima de uma certa frequência atribuir mais um frame ao processo; se não houver frames disponíveis, suspender o processo. 
- 	- Abaixo de uma certa frequência, retirar um frame ao processo.
+ 	 - Monitorizar a frequência de falta de páginas de um processo. 
+ 	 - Estabelecer um gama de frequências aceitáveis. 
+ 	 - Acima de uma certa frequência atribuir mais um frame ao processo; se não houver frames disponíveis, suspender o processo. 
+ 	 - Abaixo de uma certa frequência, retirar um frame ao processo.
 
 #### ||Outras considerações||
 Além dos algoritmos de substituição de páginas e da estratégia de alocação de frames há outros factores a ter em conta:
-
- 	- **Pré-paginação:**
-	Procura evitar o elevado nº de faltas de página que surgem através da paginação a pedido carregando mais páginas do que as exigidas pela falta de página, procurando aproveitar o facto de, o carregamento consecutivo poder ser mais rápido do que o individual.
-
-	 - **Interesse duvidoso:**
-		 - Pode ser vantajoso em algumas situações. 
-		 - Pode acontecer que muitas das páginas carregadas não venham a ser usadas.
-
-	- **Tamanho da página:**
-
+ 	
+- **Pré-paginação:**
+	Procura evitar o elevado nº de faltas de página que surgem através da paginação a pedido carregando mais páginas do que as exigidas pela falta de página, procurando aproveitar o facto do carregamento consecutivo poder ser mais rápido do que o individual.
+	
+- **Interesse duvidoso:**
+	- Pode ser vantajoso em algumas situações. 
+	- Pode acontecer que muitas das páginas carregadas não venham a ser usadas.
+	
+- **Tamanho da página:**
 	Não existe um tamanho ideal. 
+	
+- **Argumentos a favor de páginas pequenas:** 
+	- Reduz a fragmentação interna. 
+	- Permite isolar mais facilmente a memória que é efectivamente necessária (↔princípio da localidade de referência) 
+	- Reduz a I/O necessária. 
+	- Permite que a memória ocupada por um processo possa ser reduzida (relativamente a quando as páginas são grandes) 
 
-	- **Argumentos a favor de páginas pequenas:** 
-		- Reduz a fragmentação interna. 
-		- Permite isolar mais facilmente a memória que é efectivamente necessária (↔princípio da localidade de referência) 
-		- Reduz a I/O necessária. 
-		- Permite que a memória ocupada por um processo possa ser reduzida (relativamente a quando as páginas são grandes) 
+- **Argumentos a favor de páginas grandes:** 
+	- Reduz o tamanho da tabela de páginas. 
+	- A I/O é mais eficiente. (o overhead devido ao posicionamento da cabeça do disco pode pesar significativamente no tempo total de I/O de uma página pequena) 
+	- Reduz o nº de faltas de página, a partir de certa dimensão das páginas.
 
-	 - **Argumentos a favor de páginas grandes:** 
-		 - Reduz o tamanho da tabela de páginas. 
-		 - A I/O é mais eficiente. (o overhead devido ao posicionamento da cabeça do disco pode pesar significativamente no tempo total de I/O de uma pág. pequena) 
-		 - Reduz o nº de faltas de página, a partir de certa dimensão das páginas.
-
-	- **Estrutura de um programa**
-
+- **Estrutura de um programa**
 	A performance de um programa pode ser melhorada se o programador estiver consciente do modo como é feita a paginação.
-
 	Uma selecção cuidadosa das estruturas de dados e das estruturas de programação pode reduzir o nº de faltas de página e o nº de páginas no conjunto de trabalho. 
 	- Stack - boa localidade de referência.
 	- Tabela de hash - má localidade de referência.
 	- Utilização de apontadores - tende a introduzir má localidade de referência.
-
 	A linguagem de programação utilizada também pode influenciar. Certas linguagens fazem uso intensivo de apontadores.
 
-	- **Fixação de Páginas**
+- **Fixação de Páginas**
 	- Alguns frames podem ser "fechados" (locked) isto é, as páginas neles contidas não podem ser substituídas ⇒ usar um lock bit.
 	- Impedir que uma página recentemente carregada seja substituída antes de ser usada pelo menos uma vez.
 
@@ -1760,7 +1760,7 @@ Além dos algoritmos de substituição de páginas e da estratégia de alocaçã
 Alguns processadores podem não suportar paginação mas suportar segmentação.  A segmentação a pedido é semelhante à paginação a pedido: 
 - Um processo não precisa de ter todos os segmentos em memória para executar. 
 - O descritor de cada segmento tem um bit de segmento válido / inválido. (Os descritores contêm informação acerca do tamanho, protecção e localização dos segmentos) 
-- Quando um segmento referenciado não está em memória (→ trap p/ o S.O) é necessário carregá-lo. 
+- Quando um segmento referenciado não está em memória (→ trap para o S.O) é necessário carregá-lo. 
 - Se houver necessidade de substituir um segmento para carregar outro usa-se um dos algoritmos de substituição descritos anteriormente. 
 - Usa-se um bit de referência para saber os segmentos que foram acedidos. 
 
@@ -1814,17 +1814,17 @@ Maior diferença relativamente à paginação a pedido:
     
 -   **Operações sobre directórios** : procurar ficheiro, criar / destruir ficheiro, listar, …
     
--   **Estrutura dos directórios** : unico nivel, em arvore, grafo acíclico, grafo genérico.
+-   **Estrutura dos directórios** : unico nivel, em árvore, grafo acíclico, grafo genérico.
     
--   **Directórios c/ unico nivel** : todos os ficheiros no mesmo directorio. **Problemas:** nomes unicos, tempos de pesquisa longos;
+-   **Diretórios com único nivel** : todos os ficheiros no mesmo diretório. **Problemas:** nomes únicos, tempos de pesquisa longos;
     
--   **Directório c/ estrutura em arvore** : Estrutura mais comum. Um directorio contem subdirectorios. Usar um caminho para especificar o ficheiro (absoluto/relativo) o conhecido PATH.
+-   **Diretório com estrutura em +arvore** : Estrutura mais comum. Um diretório contém subdiretórios. Usar um caminho para especificar o ficheiro (absoluto/relativo) o conhecido PATH.
     
--   **Directorio em forma de grafo acíclico** : generalização da estrutura em arvore. Permite partilha de ficheiros/directorios. Um ficheiro pode ter vários pathnames.
+-   **Diretório em forma de grafo acíclico** : generalização da estrutura em árvore. Permite partilha de ficheiros/diretórios. Um ficheiro pode ter vários pathnames.
     
--   _**Hard links**_ : varias entradas de directorios referenciam a mesma entrada do mapa de ficheiros (inode, UNIX) . Ex: **ln _exisiting_file new_file_**
+-   _**Hard links**_ : várias entradas de diretórios referenciam a mesma entrada do mapa de ficheiros (inode, UNIX) . Ex: **ln _exisiting_file new_file_**
     
--   _**Soft links**_ : as entradas do directorio contêm pathnames (util p/ referenciar noutros file systems) Ex: **ls -s existing_file new_file**
+-   _**Soft links**_ : as entradas do diretório contêm pathnames (útil para referenciar noutros file systems) Ex: **ls -s existing_file new_file**
     
 -   **Evitam duplicação de dados.**
     
@@ -1844,7 +1844,7 @@ Maior diferença relativamente à paginação a pedido:
 
 **Estrutura do sistema de ficheiros**
 
--   **I/O entre memoria e disco –** feita em blocos p/ melhorar a eficiência. 1 bloco = N sectores.
+-   **I/O entre memória e disco –** feita em blocos para melhorar a eficiência. 1 bloco = N sectores.
     
 -   **Estruturação do sistema de ficheiros em níveis**
     
@@ -1867,7 +1867,9 @@ Maior diferença relativamente à paginação a pedido:
 
 **Métodos de alocação**
 
--   **Como alocar espaço p/ os ficheiros, de modo a** : - usar o espaço do disco eficientemente; - aceder aos ficheiros rapidamente.
+-   **Como alocar espaço para os ficheiros, de modo a** : 
+	- usar o espaço do disco eficientemente; 
+	- aceder aos ficheiros rapidamente.
     
 -   **Vários métodos** : alocação contígua; alocação ligada; alocação indexada.
     
@@ -1876,7 +1878,7 @@ Maior diferença relativamente à paginação a pedido:
 
 -   **Cada ficheiro é armazenado num conjunto de blocos contíguos do disco.**
     
--   **A entrada do directório p/ cada ficheiro deve indicar**
+-   **A entrada do diretório para cada ficheiro deve indicar**
     
     -   o endereço do bloco inicial
         
@@ -1888,7 +1890,7 @@ Maior diferença relativamente à paginação a pedido:
         
     -   fácil acesso (sequencial / directo)
         
-    -   poucos posicionamentos (seeks) p/ aceder ao ficheiro
+    -   poucos posicionamentos (seeks) para aceder ao ficheiro
         
     -   efeciente em aplicações que processam o ficheiro completo.
         
@@ -1896,9 +1898,9 @@ Maior diferença relativamente à paginação a pedido:
     
     -   indicar o tamanho final do ficheiro quando ele é criado.
         
-    -   Tentação p/ alocar demasiado espaço → desperdício.
+    -   Tentação para alocar demasiado espaço → desperdício.
         
-    -   Encontrar espaço livre c/ a dimensão necessária.
+    -   Encontrar espaço livre com a dimensão necessária.
         
     -   Dificuldade de crescimento.
         
@@ -1914,7 +1916,7 @@ Maior diferença relativamente à paginação a pedido:
     
 -   Os blocos podem estar dispersos pelo disco.
     
--   O directório tem apontadores p/ o primeiro e o último bloco do ficheiro.
+-   O diretório tem apontadores para o primeiro e o último bloco do ficheiro.
     
 -   **Vantagens**
     
@@ -1957,7 +1959,7 @@ Maior diferença relativamente à paginação a pedido:
 
 **- Alocação indexada**
 
--   Cada ficheiro tem uma tabela de índices c/ tantas entradas quantos os blocos do ficheiro.
+-   Cada ficheiro tem uma tabela de índices com tantas entradas quantos os blocos do ficheiro.
     
 -   O elemento _i_ da tabela contém o endereço do bloco _i_ do ficheiro.
     
@@ -1965,11 +1967,11 @@ Maior diferença relativamente à paginação a pedido:
 
 -   **Dificuldades**
     
-    -   Conhecer previamente o tamanho do ficheiro p/ determinar o tamanho da tabela de índices.
+    -   Conhecer previamente o tamanho do ficheiro para determinar o tamanho da tabela de índices.
         
-        -   Pode-se reservar, à partida, um bloco p/ a tabela de índices (bloco de índices ) →  o tamanho do ficheiro fica limitado.
+        -   Pode-se reservar, à partida, um bloco para a tabela de índices (bloco de índices ) →  o tamanho do ficheiro fica limitado.
             
-        -   Soluções p/ permitir o crescimento do ficheiro
+        -   Soluções para permitir o crescimento do ficheiro
             
     -   Espaço ocupado pela tabela de índices.
         
@@ -1983,21 +1985,21 @@ Maior diferença relativamente à paginação a pedido:
         
     -   Evita a fragmentação externa.
         
--   **Soluções p/ permitir o crescimento do ficheiro**
+-   **Soluções para permitir o crescimento do ficheiro**
     
 	-   **Lista ligada de índices:** Vários blocos de índices, constituindo uma lista ligada.
 	    
 	-   **Índice multinível** : Usar um índice de 1º nível que aponta para um índice de 2º nível que aponta para os blocos de dados. Extensível para N níveis.
 	    
-	-   **Índice directo, combinado com índice multinível:** As primeiras entradas do bloco de índices apontam directamente p/ blocos de dados. As últimas entradas do bloco de índices apontam p/ outros blocos de índices.
+	-   **Índice direto, combinado com índice multinível:** As primeiras entradas do bloco de índices apontam directamente para blocos de dados. As últimas entradas do bloco de índices apontam para outros blocos de índices.
 	    
 	-   **Índice directo, combinado com índice multinível :**
 	    
 	    -   **Vantagens**
 	        
-	        -   Possibilidade de crescimento dos ficheiros. Existe um tamanho máximo que é suficiente p/ a maioria das aplicações.
+	        -   Possibilidade de crescimento dos ficheiros. Existe um tamanho máximo que é suficiente para a maioria das aplicações.
 	            
-	        -   Acesso rápido p/ ficheiros pequenos (acedidos usando apontadores directos)
+	        -   Acesso rápido para ficheiros pequenos (acedidos usando apontadores diretos)
 	            
 	    -   **Dificuldades**
 	        
@@ -2009,11 +2011,11 @@ Maior diferença relativamente à paginação a pedido:
 	        
 	        -   Cada ficheiro, directório ou dispositivo de I/O tem um Inode associado.
 	            
-	        -   Cada entrada do directório aponta p/ o Inode respectivo.
+	        -   Cada entrada do diretório aponta para o Inode respetivo.
 	            
 	        -   Cada Inode contém:
 	            
-	            -   ipo de ficheiro: regular, directório, block special, character special
+	            -   tipo de ficheiro: regular, diretório, block special, character special
 	                
 	            -   permissões de acesso
 	                
@@ -2023,7 +2025,7 @@ Maior diferença relativamente à paginação a pedido:
 	                
 	            -   data e hora da última modificação
 	                
-	            -   localização dos blocos (só p/ ficheiros regulares e directórios)
+	            -   localização dos blocos (só para ficheiros regulares e diretórios)
 	                
 	            -   major e minor device numbers (só para ficheiros especiais)
 	                
@@ -2036,11 +2038,11 @@ Maior diferença relativamente à paginação a pedido:
 
 -   **Alocação contígua**
     
-    -   boa p/ qualquer tipo de acesso
+    -   boa para qualquer tipo de acesso
         
 -   **Alocação ligada**
     
-    -   boa p/ acesso sequencial
+    -   boa para acesso sequencial
         
     -   má para acesso aleatório
         
@@ -2066,7 +2068,7 @@ Maior diferença relativamente à paginação a pedido:
     
     -   1 bloco ↔ 1 bit ( ex: 1 bloco ocupado; 0 bloco livre)
         
-    -   Vector de bits p/ representar todos os blocos do disco.
+    -   Vetor de bits para representar todos os blocos do disco.
         
     -   **Vantagens:**
         
@@ -2083,7 +2085,7 @@ Maior diferença relativamente à paginação a pedido:
             
 -   **Lista ligada de blocos livres**
     
-    -   Ligar, através de apontadores, todos os blocos livres, mantendo numa posição especial do disco, um apontador p/ o 1º bloco livre.
+    -   Ligar, através de apontadores, todos os blocos livres, mantendo numa posição especial do disco, um apontador para o 1º bloco livre.
         
     -   **Vantagem**
         
@@ -2099,7 +2101,7 @@ Maior diferença relativamente à paginação a pedido:
             
         -   Os primeiros n-1 endereços indicam blocos livres, de facto.
             
-        -   O n-ésimo endereço indica um bloco livre c/ uma constituição semelhante a este
+        -   O n-ésimo endereço indica um bloco livre com uma constituição semelhante a este
             
         -   Vantagem (relativamente à lista ligada simples):
             
@@ -2114,11 +2116,11 @@ Maior diferença relativamente à paginação a pedido:
         
     -   Em alguns sistemas, alguma da informação associada ao ficheiro é guardada num cabeçalho do ficheiro.
         
-    -   (-) O tempo de pesquisa necessário p/ encontrar um ficheiro pode ser grande.
+    -   (-) O tempo de pesquisa necessário para encontrar um ficheiro pode ser grande.
         
 -   **Tabela de hash**
     
-    -   A tabela de hash tem como entrada um valor calculado a partir do nome do ficheiro e retorna um apontador p/ a entrada correspondente ao ficheiro, numa lista linear.
+    -   A tabela de hash tem como entrada um valor calculado a partir do nome do ficheiro e retorna um apontador para a entrada correspondente ao ficheiro, numa lista linear.
         
     -   Diminui o tempo de pesquisa de um ficheiro.
         
@@ -2129,19 +2131,19 @@ Maior diferença relativamente à paginação a pedido:
 
 -   **Eficiência na utilização do disco depende de:**
     
-    -   Algoritmos de alocação de espaço p/ os ficheiros e de manipulação de directórios
+    -   Algoritmos de alocação de espaço para os ficheiros e de manipulação de directórios
         
-        -   ex: p/ reduzir fragmentação interna, usar 2 tamanhos de clusters:
+        -   ex: para reduzir fragmentação interna, usar 2 tamanhos de clusters:
             
             -   (o último cluster de um ficheiro pode ser mais pequeno que os outros)
                 
             -   4.2 BSD →  blocos de 4KB e fragmentos de 1KB
                 
-                -   1 ficheiro c/ 18KB ocupa 2 blocos + 2 fragmentos
+                -   1 ficheiro com 18KB ocupa 2 blocos + 2 fragmentos
                     
     -   Tipos de dados mantidos em cada entrada do directório
         
-        -   ex: data da última modificação →  importante p/ os backup's mas... data da última leitura (ocupa tempo e espaço, necessário ?)
+        -   ex: data da última modificação →  importante para os backup's mas... data da última leitura (ocupa tempo e espaço, necessário ?)
             
     -   Tipo de apontadores usados para aceder aos dados
         
@@ -2157,11 +2159,11 @@ Maior diferença relativamente à paginação a pedido:
     
     -   **cache do controlador**
         
-        -   p/ manter uma pista do disco a partir do sítio onde a cabeça ficou, após o posicionamento
+        -   para manter uma pista do disco a partir do sítio onde a cabeça ficou, após o posicionamento
             
     -   **cache de disco**
         
-        -   p/ manter blocos acedidos recentemente
+        -   para manter blocos acedidos recentemente
             
     -   **no acesso sequencial**
         
@@ -2179,13 +2181,13 @@ Maior diferença relativamente à paginação a pedido:
             
         -   → device driver adequado
             
-        -   útil p/ ficheiros temporários (ex: usados por um compilador)
+        -   útil para ficheiros temporários (ex: usados por um compilador)
             
 **Recuperação**
 
 -   **Verificação de consistência**
     
-    -   correr um programa que compara os dados na estrutura de directórios c/ os dados nos blocos de dados e tenta determinar inconsistências.
+    -   correr um programa que compara os dados na estrutura de directórios com os dados nos blocos de dados e tenta determinar inconsistências.
         
         -   ex: fsck(file system check) do UNIX; scandiskdo MS Windows
             

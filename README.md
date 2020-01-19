@@ -12,11 +12,13 @@ adotamos o LaTeX.
 #### Editores
 
 - [StackEdit](https://stackedit.io/)
+- [HackMD](https://hackmd.io/)
 - [VS Code](https://marketplace.visualstudio.com/search?term=markdown&target=VSCode&category=All%20categories&sortBy=Relevance)
 
 #### Converter para pdf
 
-[markdown-pdf](https://github.com/alanshaw/markdown-pdf)
+- [markdown-pdf](https://github.com/alanshaw/markdown-pdf)
+- [pandoc](https://github.com/jgm/pandoc)
 
 #### Tutorial
 

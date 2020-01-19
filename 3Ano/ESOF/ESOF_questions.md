@@ -386,7 +386,7 @@ Which of the following is NOT a valid element or relationship in UML use case di
 
 - **message**
 
-- <<include>>
+- <<include\>\>
 
 - actor
 
@@ -499,3 +499,207 @@ Retesting a system or component to check that modifications didn't cause uninten
 - Reliability testing
 
 - Smoke testing
+
+---
+
+Which of the following is NOT an architectural pattern?
+
+- model-view-controller
+
+- pipes and filters 
+
+- **singleton**
+
+- client-server
+
+---
+
+Which architectural pattern is most appropriate for interactive systems?
+
+- **Model-view-controller**
+
+- Pipes and filters
+
+- Layered architecture
+
+- Client-server and n-tier systems
+
+---
+
+Which architectural pattern is most appropriate for batch processing?
+
+- Model-view-controller
+
+- **Pipes and filters**
+
+- Layered architecture
+
+- Client-server and n-tier systems
+
+---
+
+Which architectural pattern is most appropriate for distributed applications?
+
+- Repositories
+
+- Pipes and filters
+
+- Layered architecture
+
+- **Client-server**
+
+---
+
+Which of the following is NOT a verification and validation technique?
+
+- reviews and inspections
+
+- testing
+
+- **goal analysis**
+
+- formal verification
+
+---
+
+Which of the following is NOT an advantage of reviews and inspections as compared to testing?
+
+- Can be applied to any artifact, and not only code
+
+- Can be applied to evaluate internal quality attributes
+
+- Can be applied earlier in the lifecycle
+
+- **Can be applied to measure program performance**
+
+---
+
+Which of the following is NOT a type of code review?
+
+- Personal review
+
+- Peer review
+
+- Team inspection
+
+- **Consumer review**
+
+---
+
+In requirements engineering, system models in UML are useful for: (select the WRONG answer)
+
+- removing ambiguity inherent to natural language descriptions
+
+- organizing functional requirements
+
+- **designing the user interface**
+
+- organizing information requirements
+
+---
+
+The purpose of a use cas model is to show:
+
+- **system functionalities or services as perceived by users**
+
+- the main concepts and their relationships in a domain
+
+- internal system structure
+
+- system workflow
+
+---
+
+Which of the following is NOT a valid relationship between use cases?
+
+- **realization**
+
+- <<extend\>\> dependency
+
+- <<include\>\> dependency
+
+- generalization
+
+---
+
+In the use case "Purchase tickets online", "The event has tickets for sale" is a:
+
+- **pre-condition**
+
+- post-condition
+
+- invariant
+
+- guard
+
+---
+
+Which of the following is NOT a purpose of a domain model:
+
+- organize the vocabulary of the problem domain
+
+- identify relevant entities, attributes and relationships
+
+- capture information requirements
+
+- **describe the dynamic system behaviour**
+
+---
+
+Which of the following is NOT a valid element in a domain model (represented by a UML class diagram)?
+
+- attribute
+
+- class
+
+- constraint 
+
+- **activity**
+
+---
+
+The _ _ shows the system hardware and how software components are distributed by hardware nodes
+
+- Logical View
+
+- Implementation View
+
+- **Deployment View**
+
+- Process View
+
+---
+
+Which of the following IS NOT a RUP best practice?
+
+- Develop Iteratively
+
+- Use Component Architectures
+
+- **Use a Textual Modeling Language**
+
+- Continuously Verify Quality
+
+---
+
+In the XP planning game, who estimates the size (effort to implement) of user stories?
+
+- The customer
+
+- **The developers**
+
+- The project manager
+
+- The user
+
+---
+
+In the XP planning game, who prioritizes the user stories?
+
+- **The customer**
+
+- The developers
+
+- The project manager
+
+- The user

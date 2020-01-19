@@ -45,7 +45,7 @@ adotamos o LaTeX.
 - [Bruno Sousa](https://github.com/Rekicho)
 - [Francisco Filipe](https://github.com/CiscoFrisco)
 - [João Gonçalves](https://github.com/JoaoGoncalves98)
-- [Luís Sousa](https://github.com/luisdiogo98)
+- [Luís Silva](https://github.com/luisdiogo98)
 - [Pedro Silva](https://github.com/PedroMiguelSilva)
 
 
